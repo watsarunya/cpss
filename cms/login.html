@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>เข้าสู่ระบบ — CP B&amp;F CMS</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="cms-login">
+  <div class="cms-login__card">
+    <div class="cms-login__logo">
+      <img src="../raw/assets/cpss-logo-transparent.png" alt="CPSS" />
+    </div>
+    <h1 class="cms-login__title">เข้าสู่ระบบ</h1>
+    <p class="cms-login__subtitle">สำหรับผู้ดูแลระบบจัดการเว็บไซต์ cpbf.co.th</p>
+
+    <form class="cms-login__form" id="loginForm">
+      <div class="cms-field">
+        <label for="loginEmail">อีเมล</label>
+        <input type="text" id="loginEmail" autocomplete="username" required />
+      </div>
+      <div class="cms-field">
+        <label for="loginPassword">รหัสผ่าน</label>
+        <div class="cms-password-field">
+          <input type="password" id="loginPassword" autocomplete="current-password" required />
+          <button type="button" class="cms-password-toggle" id="loginPasswordToggle" aria-label="แสดงรหัสผ่าน" aria-pressed="false">
+            <svg class="cms-password-toggle__icon-show" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/></svg>
+            <svg class="cms-password-toggle__icon-hide" viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true" hidden><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.3 5.3A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a13.4 13.4 0 0 1-3.2 4M6.1 6.9C3.6 8.6 2 12 2 12s3.6 7 10 7c1.2 0 2.3-.2 3.3-.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="cms-error-text" id="loginError"></p>
+      <button type="submit" class="cms-btn cms-btn--primary" id="loginSubmit" style="width:100%; justify-content:center;">เข้าสู่ระบบ</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="supabase-client.js"></script>
+<script>
+  (async function () {
+    const { data: { session } } = await window.cmsSupabase.auth.getSession();
+    if (session) {
+      window.location.href = 'index.html';
+    }
+  })();
+
+  const form = document.getElementById('loginForm');
+  const errorEl = document.getElementById('loginError');
+  const submitBtn = document.getElementById('loginSubmit');
+
+  const passwordInput = document.getElementById('loginPassword');
+  const passwordToggle = document.getElementById('loginPasswordToggle');
+  const iconShow = passwordToggle.querySelector('.cms-password-toggle__icon-show');
+  const iconHide = passwordToggle.querySelector('.cms-password-toggle__icon-hide');
+
+  passwordToggle.addEventListener('click', function () {
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+    passwordToggle.setAttribute('aria-pressed', String(isHidden));
+    passwordToggle.setAttribute('aria-label', isHidden ? 'ซ่อนรหัสผ่าน' : 'แสดงรหัสผ่าน');
+    iconShow.hidden = isHidden;
+    iconHide.hidden = !isHidden;
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    errorEl.textContent = '';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'กำลังเข้าสู่ระบบ...';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const { error } = await window.cmsSupabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      errorEl.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'เข้าสู่ระบบ';
+      return;
+    }
+
+    window.location.href = 'index.html';
+  });
+</script>
+</body>
+</html>

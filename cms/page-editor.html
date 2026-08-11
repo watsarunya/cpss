@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>จัดการ Section — CP B&amp;F CMS</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+</head>
+<body>
+
+<div class="cms-shell">
+  <aside class="cms-sidebar">
+    <div class="cms-sidebar__logo">
+      <img src="../raw/assets/cpss-logo-transparent.png" alt="CPSS" />
+      <button type="button" class="cms-sidebar__toggle" id="cmsSidebarToggle" aria-label="ย่อ/ขยายเมนู">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <nav class="cms-nav">
+      <a href="index.html" class="cms-nav__item">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการเมนู</span>
+      </a>
+      <a href="banners.html" class="cms-nav__item">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="5" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m3 13 5-4 4 3 5-5 4 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 20h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการแบนเนอร์</span>
+      </a>
+      <a href="subscribers.html" class="cms-nav__item">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M3 6h18v12H3V6Zm0 0 9 7 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">Subscribe</span>
+      </a>
+      <div class="cms-nav__group-label">สินค้า</div>
+      <a href="products.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="9" cy="21" r="1.4" fill="currentColor"/><circle cx="20" cy="21" r="1.4" fill="currentColor"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการสินค้า</span>
+      </a>
+      <a href="product-categories.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <span class="cms-nav__label">หมวดหมู่สินค้า</span>
+      </a>
+      <div class="cms-nav__group-label">Newsroom</div>
+      <a href="news-articles.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการบทความ</span>
+      </a>
+      <a href="news-categories.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <span class="cms-nav__label">หมวดหมู่</span>
+      </a>
+      <div class="cms-nav__group-label">เพจ</div>
+      <a href="pages.html" class="cms-nav__item cms-nav__item--sub is-active">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการเพจ</span>
+      </a>
+      <div class="cms-nav__group-label">ระบบ</div>
+      <a href="admins.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการแอดมิน</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div class="cms-main">
+    <header class="cms-topbar">
+      <div class="cms-topbar__right">
+        <div class="cms-avatar-menu">
+          <button type="button" class="cms-avatar" id="cmsAvatarBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="cms-avatar__circle" id="cmsUserInitial">?</span>
+            <span class="cms-avatar__email" id="cmsUserEmail">...</span>
+          </button>
+          <div class="cms-avatar-menu__dropdown" id="cmsAvatarDropdown">
+            <button type="button" class="cms-avatar-menu__item" id="cmsLogoutBtn">
+              <span class="cms-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              ออกจากระบบ
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="cms-content">
+      <p class="cms-breadcrumb"><a href="pages.html">CMS / Page Management</a> / <strong id="pageEditorBreadcrumb">...</strong>
+        <a href="#" id="pageEditorViewLink" target="_blank" rel="noopener" class="cms-btn cms-btn--ghost" style="margin-left:10px;" hidden>🔗 เปิดดูหน้านี้</a>
+      </p>
+
+      <div class="cms-panel" id="pageSettingsPanel">
+        <div class="cms-toolbar">
+          <span class="cms-toolbar__label">ตั้งค่าเพจ</span>
+        </div>
+        <div class="cms-modal__body" style="max-height: none;">
+          <div class="cms-field-row">
+            <div class="cms-field">
+              <label for="fieldPageTitleTh">ชื่อเพจ (TH) *</label>
+              <input type="text" id="fieldPageTitleTh" required />
+            </div>
+            <div class="cms-field">
+              <label for="fieldPageTitleEn">ชื่อเพจ (EN)</label>
+              <input type="text" id="fieldPageTitleEn" />
+            </div>
+          </div>
+          <div class="cms-field">
+            <label for="fieldPageSlug">Slug</label>
+            <input type="text" id="fieldPageSlug" disabled />
+          </div>
+          <div class="cms-checkbox-row">
+            <input type="checkbox" id="fieldPageActive" checked />
+            <label for="fieldPageActive" style="font-weight:600; color:var(--cms-text);">เปิดใช้งานเพจ (Active)</label>
+          </div>
+          <p class="cms-error-text" id="pageSettingsError"></p>
+        </div>
+      </div>
+
+      <div class="cms-panel">
+        <div class="cms-toolbar">
+          <span class="cms-toolbar__label">Section</span>
+          <div class="cms-toolbar__right">
+            <button type="button" class="cms-btn cms-btn--primary" id="addSectionBtn">
+              <span aria-hidden="true">+</span> เพิ่ม Section
+            </button>
+          </div>
+        </div>
+
+        <div class="cms-section-list" id="sectionGrid"></div>
+        <div class="cms-empty" id="sectionEmptyState" hidden>เพจนี้ยังไม่มี section — กด "+ เพิ่ม Section" เพื่อเริ่มสร้างรายการแรก</div>
+      </div>
+    </main>
+
+    <div class="cms-sticky-bottombar">
+      <a href="pages.html" class="cms-btn cms-btn--ghost">← กลับหน้ารายการ</a>
+      <button type="button" class="cms-btn cms-btn--primary" id="saveAllBtn">บันทึกการเปลี่ยนแปลงทั้งหมด</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage Image Modal: รูปภาพ + ตำแหน่งรูปภาพเท่านั้น (หัวข้อ/เนื้อหา/ปุ่ม/anchor แก้ตรงหน้ารายการแล้ว) -->
+<div class="cms-modal-overlay" id="sectionModalOverlay" hidden>
+  <div class="cms-modal cms-modal--wide">
+    <div class="cms-modal__header">
+      <h2 id="sectionModalTitle">จัดการรูปภาพ</h2>
+      <button type="button" class="cms-modal__close" id="sectionModalClose" aria-label="ปิด">✕</button>
+    </div>
+    <form id="sectionForm">
+      <div class="cms-modal__body">
+        <div class="cms-field" id="layoutPickerField">
+          <label>รูปแบบ Section</label>
+          <div class="cms-align-picker" id="layoutPicker">
+            <button type="button" class="cms-align-picker__btn is-active" data-layout="image-left">◧ รูปซ้าย</button>
+            <button type="button" class="cms-align-picker__btn" data-layout="image-right">◨ รูปขวา</button>
+            <button type="button" class="cms-align-picker__btn" data-layout="image-top">⬒ รูปบน</button>
+            <button type="button" class="cms-align-picker__btn" data-layout="image-bottom">⬓ รูปล่าง</button>
+          </div>
+          <input type="hidden" id="fieldSectionLayout" value="image-left" />
+        </div>
+
+        <div class="cms-field" id="sectionImagesField">
+          <label>รูปภาพ * (สูงสุด 4 ภาพ — ระบบจัดกริดให้อัตโนมัติตามจำนวนรูป ลากเพื่อจัดลำดับ)</label>
+          <div class="cms-product-images" id="sectionImagesGrid">
+            <!-- rendered by page-editor.js -->
+          </div>
+          <input type="file" id="fieldSectionImageFile" accept="image/*" hidden />
+          <span class="cms-image-field__status" id="fieldSectionImageStatus"></span>
+          <p class="cms-section-hint">รองรับรูปภาพ jpg, jpeg, png ขนาดไม่เกิน 5 MB — คลิกหรือลากไฟล์มาวางที่ช่อง "+"</p>
+          <div class="cms-checkbox-row" style="margin-top:10px;">
+            <input type="checkbox" id="fieldImagesGrayscale" checked />
+            <label for="fieldImagesGrayscale">เปิดใช้งาน Grayscale Filter (ภาพขาวดำ เปลี่ยนเป็นสีตอน hover)</label>
+          </div>
+        </div>
+        <div class="section-footer"></div>
+
+
+        <div class="cms-field">
+          <label>Custom HTML</label>
+          <div class="cms-checkbox-row">
+            <input type="checkbox" id="fieldUseCustomHtml" />
+            <label for="fieldUseCustomHtml">ใช้งาน</label>
+          </div>
+          <p class="cms-section-hint" id="customHtmlHint">เมื่อเปิดใช้งาน ระบบจะปิดการอัปโหลดรูปภาพและการกำหนดรูปแบบด้านบน เพื่อให้ระบบใช้งานจาก HTML ที่ระบุอย่างเดียว — กรอกโค้ด HTML ได้ที่ช่อง "โค้ด HTML" ตรงหน้ารายการเพจ (หลังจากสร้าง section นี้แล้ว)</p>
+        </div>
+        <div class="section-footer"></div>
+
+        <div class="cms-field">
+          <label>รูปพื้นหลัง (Background)</label>
+          <div class="cms-align-picker" id="bgTypePicker">
+            <button type="button" class="cms-align-picker__btn is-active" data-bg-type="image">🖼️ รูปภาพ</button>
+            <button type="button" class="cms-align-picker__btn" data-bg-type="color">🎨 สีพื้น</button>
+            <button type="button" class="cms-align-picker__btn" data-bg-type="gradient">🌈 Gradient</button>
+          </div>
+          <input type="hidden" id="fieldBgType" value="image" />
+        </div>
+
+        <div class="cms-field" id="bgImageFields">
+          <div class="cms-image-field">
+            <img id="fieldBgImagePreview" class="cms-image-field__preview" alt="" hidden />
+            <div class="cms-image-field__controls">
+              <input type="text" id="fieldBgImage" placeholder="raw/assets/image/... หรืออัปโหลดไฟล์" />
+              <div class="cms-dropzone" id="fieldBgImageDropzone">
+                <svg class="cms-dropzone__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <p class="cms-dropzone__title"><strong>คลิกเพื่ออัปโหลด</strong> หรือลากไฟล์มาวาง</p>
+                <p class="cms-dropzone__hint">รองรับรูปภาพ jpg, jpeg, png ขนาดไม่เกิน 5 MB</p>
+              </div>
+              <input type="file" id="fieldBgImageFile" accept="image/*" hidden />
+              <div class="cms-image-field__upload-row">
+                <button type="button" class="cms-btn cms-btn--ghost" id="removeBgImageBtn">🗑 ลบพื้นหลัง</button>
+                <span class="cms-image-field__status" id="fieldBgImageStatus"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cms-field" id="bgColorFields" hidden>
+          <label for="fieldBgColorText">สีพื้นหลัง</label>
+          <div class="cms-color-field">
+            <input type="color" id="fieldBgColor" value="#ffffff" />
+            <input type="text" id="fieldBgColorText" placeholder="#ffffff หรือ rgb(255,255,255)" />
+          </div>
+        </div>
+
+        <div class="cms-field" id="bgGradientFields" hidden>
+          <div class="cms-field-row">
+            <div class="cms-field">
+              <label for="fieldBgGradientFromText">สีเริ่มต้น</label>
+              <div class="cms-color-field">
+                <input type="color" id="fieldBgGradientFrom" value="#ffffff" />
+                <input type="text" id="fieldBgGradientFromText" placeholder="#ffffff" />
+              </div>
+            </div>
+            <div class="cms-field">
+              <label for="fieldBgGradientToText">สีสิ้นสุด</label>
+              <div class="cms-color-field">
+                <input type="color" id="fieldBgGradientTo" value="#000000" />
+                <input type="text" id="fieldBgGradientToText" placeholder="#000000" />
+              </div>
+            </div>
+          </div>
+          <label>ทิศทาง Gradient</label>
+          <div class="cms-align-picker" id="bgGradientDirectionPicker">
+            <button type="button" class="cms-align-picker__btn is-active" data-direction="to bottom">⬇️ บน → ล่าง</button>
+            <button type="button" class="cms-align-picker__btn" data-direction="to left">⬅️ ขวา → ซ้าย</button>
+          </div>
+          <input type="hidden" id="fieldBgGradientDirection" value="to bottom" />
+        </div>
+
+        <div class="cms-field-row">
+          <div class="cms-field">
+            <label for="fieldBgOpacity">% ความโปร่งใส (Opacity) — <span id="fieldBgOpacityValue">100</span>%</label>
+            <input type="range" id="fieldBgOpacity" min="0" max="100" value="100" />
+          </div>
+          <div class="cms-field">
+            <label for="fieldBgGrayscale">% Grayscale — <span id="fieldBgGrayscaleValue">0</span>%</label>
+            <input type="range" id="fieldBgGrayscale" min="0" max="100" value="0" />
+          </div>
+        </div>
+
+        <p class="cms-error-text" id="sectionFormError"></p>
+      </div>
+      <div class="cms-modal__footer">
+        <span style="flex:1;"></span>
+        <button type="button" class="cms-btn" id="sectionModalCancel">ยกเลิก</button>
+        <button type="submit" class="cms-btn cms-btn--primary" id="sectionFormSubmit">บันทึก</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="cms-toast" id="cmsToastWrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="config.js"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="upload.js"></script>
+<script src="../page-render.js"></script>
+<script src="page-editor.js"></script>
+</body>
+</html>

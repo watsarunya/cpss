@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Banner Management — CP B&amp;F CMS</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="cms-shell">
+  <aside class="cms-sidebar">
+    <div class="cms-sidebar__logo">
+      <img src="../raw/assets/cpss-logo-transparent.png" alt="CPSS" />
+      <button type="button" class="cms-sidebar__toggle" id="cmsSidebarToggle" aria-label="ย่อ/ขยายเมนู">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <nav class="cms-nav">
+      <a href="index.html" class="cms-nav__item">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการเมนู</span>
+      </a>
+      <a href="banners.html" class="cms-nav__item is-active">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="5" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m3 13 5-4 4 3 5-5 4 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 20h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการแบนเนอร์</span>
+      </a>
+      <a href="subscribers.html" class="cms-nav__item">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M3 6h18v12H3V6Zm0 0 9 7 9-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">Subscribe</span>
+      </a>
+      <div class="cms-nav__group-label">สินค้า</div>
+      <a href="products.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="9" cy="21" r="1.4" fill="currentColor"/><circle cx="20" cy="21" r="1.4" fill="currentColor"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการสินค้า</span>
+      </a>
+      <a href="product-categories.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <span class="cms-nav__label">หมวดหมู่สินค้า</span>
+      </a>
+      <div class="cms-nav__group-label">Newsroom</div>
+      <a href="news-articles.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการบทความ</span>
+      </a>
+      <a href="news-categories.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <span class="cms-nav__label">หมวดหมู่</span>
+      </a>
+      <div class="cms-nav__group-label">เพจ</div>
+      <a href="pages.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">รายการเพจ</span>
+      </a>
+      <div class="cms-nav__group-label">ระบบ</div>
+      <a href="admins.html" class="cms-nav__item cms-nav__item--sub">
+        <span class="cms-nav__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <span class="cms-nav__label">จัดการแอดมิน</span>
+      </a>
+    </nav>
+  </aside>
+
+  <div class="cms-main">
+    <header class="cms-topbar">
+      <div class="cms-topbar__right">
+        <div class="cms-avatar-menu">
+          <button type="button" class="cms-avatar" id="cmsAvatarBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="cms-avatar__circle" id="cmsUserInitial">?</span>
+            <span class="cms-avatar__email" id="cmsUserEmail">...</span>
+          </button>
+          <div class="cms-avatar-menu__dropdown" id="cmsAvatarDropdown">
+            <button type="button" class="cms-avatar-menu__item" id="cmsLogoutBtn">
+              <span class="cms-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              ออกจากระบบ
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="cms-content">
+      <p class="cms-breadcrumb">CMS / <strong>Banner Management</strong></p>
+
+      <div class="cms-tabs" role="tablist">
+        <button type="button" class="cms-tab is-active" id="tabHero" data-section="hero" role="tab" aria-selected="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/></svg>
+          Hero Banner
+        </button>
+        <button type="button" class="cms-tab" id="tabKv" data-section="kv" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/></svg>
+          KV Banner
+        </button>
+      </div>
+
+      <p class="cms-section-hint" id="sectionHint"></p>
+
+      <div class="cms-page-picker" id="heroPagePicker">
+        <label for="heroPageInput">หน้าเพจ (Page)</label>
+        <select id="heroPageInput"></select>
+        <span class="cms-page-picker__hint">รายการหน้าเพจดึงมาจากชื่อเมนู (Name TH) ใน Menu Management ที่เปิดใช้งาน (active) เท่านั้น — เลือกหน้าเพื่อดู/แก้ไขแบนเนอร์ของหน้านั้น</span>
+      </div>
+
+      <div class="cms-stats">
+        <div class="cms-stat-card">
+          <p class="cms-stat-card__label">Total Banners (โควตาสูงสุด 5)</p>
+          <div class="cms-stat-card__value"><span id="statTotalBanners">–</span></div>
+        </div>
+        <div class="cms-stat-card">
+          <p class="cms-stat-card__label">Active</p>
+          <div class="cms-stat-card__value"><span id="statActiveBanners">–</span></div>
+        </div>
+        <div class="cms-stat-card">
+          <p class="cms-stat-card__label">Inactive</p>
+          <div class="cms-stat-card__value"><span id="statInactiveBanners">–</span></div>
+        </div>
+      </div>
+
+      <div class="cms-panel">
+        <div class="cms-toolbar">
+          <span class="cms-toolbar__label" id="listLabel">Hero Banner</span>
+          <div class="cms-toolbar__right">
+            <button type="button" class="cms-btn cms-btn--primary" id="addBannerBtn">
+              <span aria-hidden="true">+</span> Add Banner
+            </button>
+          </div>
+        </div>
+
+        <div class="cms-banner-grid" id="bannerGrid"></div>
+        <div class="cms-empty" id="bannerEmptyState" hidden>ยังไม่มีแบนเนอร์ในหมวดนี้ — กด "+ Add Banner" เพื่อเริ่มสร้างรายการแรก</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add / Edit Modal -->
+<div class="cms-modal-overlay" id="bannerModalOverlay" hidden>
+  <div class="cms-modal cms-modal--wide">
+    <div class="cms-modal__header">
+      <h2 id="bannerModalTitle">เพิ่มแบนเนอร์ใหม่</h2>
+      <button type="button" class="cms-modal__close" id="bannerModalClose" aria-label="ปิด">✕</button>
+    </div>
+    <form id="bannerForm">
+      <div class="cms-modal__body">
+        <div class="cms-field" id="fieldPageWrap">
+          <label for="fieldPageUrl">หน้าเพจ (Page) — แบนเนอร์นี้จะแสดงเฉพาะหน้านี้เท่านั้น *</label>
+          <select id="fieldPageUrl" required></select>
+        </div>
+
+        <div class="cms-field-row">
+          <div class="cms-field">
+            <label for="fieldImageTh">Image TH *</label>
+            <div class="cms-image-field">
+              <img id="fieldImageThPreview" class="cms-image-field__preview" alt="" hidden />
+              <div class="cms-image-field__controls">
+                <input type="text" id="fieldImageTh" placeholder="raw/assets/image/... หรืออัปโหลดไฟล์" required />
+                <div class="cms-dropzone" id="fieldImageThDropzone">
+                  <svg class="cms-dropzone__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <p class="cms-dropzone__title"><strong>คลิกเพื่ออัปโหลด</strong> หรือลากไฟล์มาวาง</p>
+                  <p class="cms-dropzone__hint">รองรับรูปภาพ jpg, jpeg, png ขนาดไม่เกิน 5 MB</p>
+                </div>
+                <input type="file" id="fieldImageThFile" accept="image/*" hidden />
+                <span class="cms-image-field__status" id="fieldImageThStatus"></span>
+              </div>
+            </div>
+          </div>
+          <div class="cms-field">
+            <label for="fieldImageEn">Image EN *</label>
+            <div class="cms-image-field">
+              <img id="fieldImageEnPreview" class="cms-image-field__preview" alt="" hidden />
+              <div class="cms-image-field__controls">
+                <input type="text" id="fieldImageEn" placeholder="raw/assets/image/... หรืออัปโหลดไฟล์" required />
+                <div class="cms-dropzone" id="fieldImageEnDropzone">
+                  <svg class="cms-dropzone__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <p class="cms-dropzone__title"><strong>คลิกเพื่ออัปโหลด</strong> หรือลากไฟล์มาวาง</p>
+                  <p class="cms-dropzone__hint">รองรับรูปภาพ jpg, jpeg, png ขนาดไม่เกิน 5 MB</p>
+                </div>
+                <input type="file" id="fieldImageEnFile" accept="image/*" hidden />
+                <span class="cms-image-field__status" id="fieldImageEnStatus"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cms-field-row">
+          <div class="cms-field">
+            <label for="fieldTitleTh">Title (TH)</label>
+            <input type="text" id="fieldTitleTh" />
+          </div>
+          <div class="cms-field">
+            <label for="fieldTitleEn">Title (EN)</label>
+            <input type="text" id="fieldTitleEn" />
+          </div>
+        </div>
+
+        <div class="cms-field-row">
+          <div class="cms-field">
+            <label for="fieldDescTh">Description (TH)</label>
+            <textarea id="fieldDescTh" rows="2"></textarea>
+          </div>
+          <div class="cms-field">
+            <label for="fieldDescEn">Description (EN)</label>
+            <textarea id="fieldDescEn" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="cms-field-row">
+          <div class="cms-field">
+            <label for="fieldButtonText">Button (ข้อความปุ่ม)</label>
+            <input type="text" id="fieldButtonText" placeholder="เช่น ค้นหาพวกเรา" />
+          </div>
+          <div class="cms-field">
+            <label for="fieldLinkUrl">Link (ปลายทางเมื่อคลิก)</label>
+            <input type="text" id="fieldLinkUrl" placeholder="เช่น products.html" />
+          </div>
+        </div>
+
+        <div class="cms-field">
+          <label>ตำแหน่ง Title/Description</label>
+          <div class="cms-align-picker" id="alignPicker">
+            <button type="button" class="cms-align-picker__btn is-active" data-align="left">⯇ ชิดซ้าย</button>
+            <button type="button" class="cms-align-picker__btn" data-align="center">☰ กึ่งกลาง</button>
+            <button type="button" class="cms-align-picker__btn" data-align="right">ชิดขวา ⯈</button>
+          </div>
+          <input type="hidden" id="fieldTextAlign" value="left" />
+        </div>
+
+        <div class="cms-checkbox-row">
+          <input type="checkbox" id="fieldBannerActive" checked />
+          <label for="fieldBannerActive" style="font-weight:600; color:var(--cms-text);">เปิดใช้งาน (Active)</label>
+        </div>
+
+        <p class="cms-error-text" id="bannerFormError"></p>
+      </div>
+      <div class="cms-modal__footer">
+        <button type="button" class="cms-btn" id="bannerModalCancel">ยกเลิก</button>
+        <button type="submit" class="cms-btn cms-btn--primary" id="bannerFormSubmit">บันทึก</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="cms-modal-overlay" id="previewModalOverlay" hidden>
+  <div class="cms-modal cms-modal--preview">
+    <div class="cms-modal__header">
+      <h2>Preview</h2>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="cms-preview-lang-toggle" id="previewLangToggle">
+          <button type="button" class="is-active" data-lang="th">TH</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+        <button type="button" class="cms-modal__close" id="previewModalClose" aria-label="ปิด">✕</button>
+      </div>
+    </div>
+    <div class="cms-modal__body" style="padding:0; max-height:none;">
+      <div class="cms-preview-stage" id="previewStage"></div>
+    </div>
+  </div>
+</div>
+
+<div class="cms-toast" id="cmsToastWrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="upload.js"></script>
+<script src="banners.js"></script>
+</body>
+</html>

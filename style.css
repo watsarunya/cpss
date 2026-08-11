@@ -1,0 +1,6044 @@
+/* ==================================
+   0. CI Fonts — Bricolage Grotesque (EN) + FC Gimmick (TH)
+   self-hosted จากไฟล์ฟอนต์ทางการของแบรนด์ (CP B&F_Font ENG & TH)
+   ใช้ font-weight ตามน้ำหนักจริงที่มีไฟล์ให้ ไม่มี synthetic bold/italic
+================================== */
+
+/* Bricolage Grotesque (EN) — variable font ไฟล์เดียวรองรับน้ำหนัก 200–800 ต่อเนื่อง
+   rev.47 — เพิ่ม unicode-range จำกัดชัดเจนว่าฟอนต์นี้ครอบคลุมแค่ Latin/ตัวเลข/สัญลักษณ์พื้นฐาน
+   กันไม่ให้เบราว์เซอร์เอาฟอนต์นี้ไปพิจารณากับตัวอักษรไทยเลยแม้แต่ขั้นตอนเดียว (ตัดความกำกวมเรื่อง fallback ข้าม script)
+   rev.CPSS — path เดิมชี้ไฟล์ที่ไม่มีอยู่จริงแล้ว (raw/assets ถูกแทนที่ด้วยชุด CPSS ที่มีแค่ 4 ไฟล์ฟอนต์แบน
+   ไม่มีโฟลเดอร์ย่อย) ทำให้ทั้งเว็บ fallback ไปฟอนต์ระบบเงียบๆ มาตลอด — แก้ path ให้ตรงกับไฟล์จริงที่มีอยู่ */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("raw/assets/fonts/BricolageGrotesque-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* FC Gimmick (TH) — ฟอนต์ประจำแบรนด์ภาษาไทย
+   rev.CPSS — ชุดไฟล์ที่มีอยู่จริงตอนนี้เหลือแค่ 3 น้ำหนัก (Regular/Medium/Bold) ไม่มี Thin/ExtraLight/Heavy/
+   Black/italic แบบชุดเดิมของ B&F แล้ว — ยุบเหลือ 3 @font-face คลุมทั้งช่วง 100-900 ให้ font-weight ไหนก็ตกมาใช้
+   น้ำหนักที่ใกล้เคียงที่สุดเสมอ (เดิมมีช่องว่างระหว่างช่วงจนบางน้ำหนัก fallback ข้ามฟอนต์ไปเลย) */
+@font-face {
+  font-family: "FC Gimmick";
+  src: url("raw/assets/fonts/FCGimmick-Regular.ttf") format("truetype");
+  font-weight: 100 449;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0E00-0E7F, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: "FC Gimmick";
+  src: url("raw/assets/fonts/FCGimmick-Medium.ttf") format("truetype");
+  font-weight: 450 599;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0E00-0E7F, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: "FC Gimmick";
+  src: url("raw/assets/fonts/FCGimmick-Bold.ttf") format("truetype");
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0E00-0E7F, U+200C-200D, U+25CC;
+}
+
+/* ==================================
+   1. Global Design Tokens
+================================== */
+
+:root {
+  --primary-color: #1b5ef9;
+  --primary-hover: #164ecf;
+  --primary-dark: #123c9e;
+  --primary-soft: #e9f0ff;
+
+  --accent-pink: #e975cd;
+  --accent-pink-hover: #c2185b;
+  --accent-pink-soft: #fce4ec;
+
+  --vibrant-yellow: #fffde7;
+  --highlight-yellow: #ffeb3b;
+
+  --bg-main: #ffffff;
+  --bg-card: #fffde7;
+
+  --font-title: #333333;
+  --font-desc: #666666;
+  --font-light: #ffffff;
+
+  --border-color: #e1e4ea;
+
+  /* rev.45: CI font ทางการ — Bricolage Grotesque (EN) นำหน้า, ตัวอักษรไทยจะ fallback ไป FC Gimmick อัตโนมัติ
+     เพราะ Bricolage Grotesque ไม่มีกลีบอักษรไทย (ทำงานได้แม้ข้อความ TH/EN ปนกันในประโยคเดียว) */
+  --font-family: "Bricolage Grotesque", "FC Gimmick", sans-serif;
+
+  --container-width: 1440px;
+  --card-radius: 28px;
+  --pill-radius: 999px;
+
+  --shadow-card:
+    0 4px 10px rgb(28 39 68 / 6%),
+    0 16px 36px rgb(28 39 68 / 8%);
+
+  --shadow-primary:
+    0 8px 24px rgb(19 90 247 / 24%);
+
+  --shadow-accent:
+    0 8px 24px rgb(233 30 99 / 24%);
+
+  --about-container-width: 1240px;
+
+  --hero-container-width: 1500px;
+  --hero-shadow:
+    0 8px 18px rgb(24 40 82 / 12%),
+    0 24px 52px rgb(24 40 82 / 18%);
+
+  /* rev.29: Products section — alias ทับ token เดิมตาม CI แทนที่จะประกาศซ้ำ */
+  --bg-product-section: #f4f3f1;
+  --product-accent: var(--primary-color);
+  --product-accent-hover: var(--primary-hover);
+  --text-primary: var(--font-title);
+  --text-secondary: var(--font-desc);
+  --border-light: var(--border-color);
+
+  /* rev.31: สีทางการ CI (จาก CP B&F_Color palettes/) — ใช้เฉพาะ Contact section + Footer ตามคำสั่งผู้ใช้ */
+  --ci-blue: #1b5ef9;
+  --ci-yellow: rgb(255 224 47);
+  --ci-red: #ff242a;
+  --shadow-ci-red: 0 8px 24px rgb(255 36 42 / 28%);
+
+  /* rev.43: LINE brand green — เฉพาะปุ่ม "Shop with LINE" ในการ์ดสินค้า */
+  --line-green: #06c755;
+  --line-green-hover: #05a648;
+}
+
+/* ==================================
+   2. Global Reset
+================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* เว้นที่ด้านบนเท่ากับความสูงจริงของ .site-header (fixed) กันเมนูทับเนื้อหา — เดิมอยู่ที่ .hero-section
+     ย้ายมาไว้ที่ body แทน เพราะตอนนี้ hero-section ถูกซ่อนได้ (ไม่มีแบนเนอร์ในหน้านั้น) ถ้าเว้นที่ไว้ที่ hero-section
+     เพียงอย่างเดียว หน้าที่ไม่มี hero banner จะโดนเมนู fixed ทับ section ถัดไปทันที
+     ค่า 92px คือ fallback เผื่อ JS (setHeaderHeightVar) ยังไม่ทำงาน */
+  padding: var(--header-height, 92px) 0 0;
+  background-color: var(--bg-main);
+  color: var(--font-title);
+  font-family: var(--font-family);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+section{ position:relative; margin:0; }
+
+.section-container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+/* ==================================
+   3. Shared Typography
+================================== */
+
+.web-title {
+  margin: 0 0 1rem;
+  color: var(--font-title);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 0.95;
+}
+
+.web-description {
+  margin: 0;
+  color: var(--font-desc);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 14px;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ==================================
+   4. Shared Buttons
+================================== */
+
+/* rev.33: ปุ่ม CTA ทั้งหน้าเปลี่ยนเป็นสไตล์ตัวหนังสือขีดเส้นใต้ (text-link) ตามภาพ ref "SEE WHAT'S INSIDE" — ไม่มีพื้นหลัง/pill/shadow อีกต่อไป */
+
+.btn-primary {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid currentcolor;
+  background: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  color: var(--font-title);
+}
+
+.btn-primary:hover {
+  opacity: 0.7;
+}
+
+/* ==================================
+   Section 6: News & Event
+================================== */
+
+.news-section {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 80px;
+  margin-bottom: 0;
+  /*background-color: #ffffff;*/
+}
+
+.news-section .section-container {
+  position: relative;
+  z-index: 2;
+}
+
+.news-section__header {
+  margin-bottom: 52px;
+  text-align: center;
+}
+
+/* News Grid */
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* News Footer */
+
+.news-section__footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.news-section__view-all {
+  flex-shrink: 0;
+}
+
+/* ==================================
+   Section 7: Contact Us
+================================== */
+
+.contact-section {
+  --contact-dark: var(--primary-dark);
+  --contact-accent: #ffffff;
+
+  position: relative;
+  overflow: hidden;
+  padding: 30px 80px;
+  margin-bottom: 0;
+  /*background-color: var(--contact-dark);*/
+  color: var(--font-light);
+}
+
+.contact-section__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Map */
+
+.contact-section__map {
+  position: relative;
+}
+
+.contact-section__map-frame {
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--card-radius);
+  /*filter: invert(92%) hue-rotate(180deg) contrast(90%);*/
+}
+
+.contact-section__map-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--font-light);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Form */
+
+.contact-section__title {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+}
+
+.contact-section__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-section__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.contact-section__field > span {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.contact-section__label-row {
+  display: block;
+}
+
+.contact-section__field span.required-asterisk {
+  margin-left: 3px;
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.contact-section__field input,
+.contact-section__field select,
+.contact-section__field textarea {
+  width: 100%;
+  padding: 8px 2px;
+  border: none;
+  border-bottom: 1.5px solid rgb(255 255 255 / 25%);
+  background: transparent;
+  color: var(--font-light);
+  font-family: var(--font-family);
+  font-size: 15px;
+  resize: vertical;
+}
+
+.contact-section__field select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.contact-section__field select option {
+  color: var(--font-title);
+}
+
+.contact-section__field input:focus,
+.contact-section__field select:focus,
+.contact-section__field textarea:focus {
+  border-bottom-color: var(--contact-accent);
+  outline: none;
+}
+
+.contact-section__field input::placeholder,
+.contact-section__field textarea::placeholder {
+  color: rgb(255 255 255 / 45%);
+}
+
+/* rev.54 — inline validation (Name/Phone/Message required) */
+.contact-section__error {
+  display: none;
+  color: #ff8080;
+  font-size: 12.5px;
+}
+
+.contact-section__field.is-invalid input,
+.contact-section__field.is-invalid textarea {
+  border-bottom-color: #ff6b6b;
+}
+
+.contact-section__field.is-invalid .contact-section__error {
+  display: block;
+}
+
+.contact-section__submit {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 10px 30px;
+  border: 1.5px solid var(--font-light);
+  border-radius: var(--pill-radius);
+  background: transparent;
+  color: var(--font-light);
+  font-family: var(--font-family);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-section__submit:hover {
+  background-color: var(--font-light);
+  color: var(--contact-dark);
+}
+
+@media (max-width: 1024px) {
+  .contact-section__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-section {
+    padding: 56px 20px;
+  }
+}
+
+/* Back to top button */
+
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 45;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  box-shadow: var(--shadow-primary);
+  color: var(--font-light);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background-color 0.2s ease;
+  visibility: hidden;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background-color: var(--primary-hover);
+}
+
+@media (max-width: 640px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Floating Contact button + popup */
+
+.floating-contact {
+  position: fixed;
+  right: 24px;
+  bottom: 84px;
+  z-index: 46;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--ci-yellow);
+  box-shadow: var(--shadow-accent);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.floating-contact:hover {
+  background-color: var(--primary-color);
+  color: var(--ci-yellow);
+  transform: translateY(-2px);
+}
+
+.contact-popup {
+  position: fixed;
+  right: 24px;
+  bottom: 144px;
+  z-index: 47;
+  width: 300px;
+  max-width: calc(100vw - 48px);
+  overflow: hidden;
+  border-radius: 18px;
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  transform-origin: bottom right;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  visibility: hidden;
+}
+
+.contact-popup.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+.contact-popup__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+.contact-popup__header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.contact-popup__close {
+  display: flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 15%);
+  color: var(--font-light);
+  cursor: pointer;
+}
+
+.contact-popup__close:hover {
+  background-color: rgb(255 255 255 / 30%);
+}
+
+.contact-popup__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+
+.contact-popup__text {
+  margin: 0 0 4px;
+  color: var(--font-desc);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.contact-popup__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--font-title);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-popup__link:hover {
+  color: var(--primary-color);
+}
+
+.contact-popup__cta {
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-soft);
+  color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.contact-popup__cta:hover {
+  background-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+@media (max-width: 640px) {
+  .floating-contact {
+    right: 16px;
+    bottom: 72px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .contact-popup {
+    right: 16px;
+    bottom: 126px;
+    width: calc(100vw - 32px);
+  }
+}
+
+/* Site Footer — rev.40: redesign เต็มรูปแบบตาม ref ใหม่ (พื้นเข้ม navy, newsletter bar, 5 คอลัมน์, bottom bar พร้อม lang toggle) */
+
+.site-footer {
+  --footer-bg: #191c2c;
+  --footer-bg-soft: #22263a;
+  --footer-border: rgb(255 255 255 / 10%);
+  --footer-text: rgb(255 255 255 / 65%);
+  --footer-accent: #4fc3e8;
+
+  background-color: var(--footer-bg);
+  color: var(--font-light);
+  font-family: var(--font-family);
+  padding: 20px 30px;
+}
+
+.site-footer__newsletter {
+  border-bottom: 1px solid var(--footer-border);
+}
+
+.site-footer__newsletter-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 30px 20px;
+}
+
+.site-footer__newsletter-copy h2 {
+  margin: 0 0 8px;
+  font-size: 1.375rem;
+  font-weight: 800;
+}
+
+.site-footer__newsletter-copy p {
+  margin: 0;
+  color: var(--footer-text);
+  font-size: 14px;
+}
+
+.site-footer__newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.site-footer__newsletter-form input {
+  min-width: 240px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--bg-main);
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+.site-footer__newsletter-form input::placeholder {
+  color: var(--font-desc);
+}
+
+.site-footer__newsletter-form button {
+  flex-shrink: 0;
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.site-footer__newsletter-form button:hover {
+  filter: brightness(1.08);
+}
+
+.site-footer__newsletter-form button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.site-footer__newsletter-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.site-footer__newsletter-status.is-success {
+  color: #16a34a;
+}
+
+.site-footer__newsletter-status.is-error {
+  color: #dc2626;
+}
+
+.site-footer__newsletter-status.is-info {
+  color: var(--footer-text);
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: 32px;
+  padding: 20px 30px;
+}
+
+.site-footer__brand {
+  padding-right: 16px;
+}
+
+.site-footer__logo {
+  display: block;
+  width: auto;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.site-footer__brand-text {
+  margin: 0 0 20px;
+  max-width: 320px;
+  color: var(--footer-text);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.site-footer__social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.site-footer__social-icon {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--footer-border);
+  border-radius: 50%;
+  color: var(--font-light);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.site-footer__social-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.site-footer__social-icon:hover {
+  border-color: var(--footer-accent);
+  background-color: rgb(255 255 255 / 8%);
+}
+
+.site-footer__heading {
+  margin: 0 0 16px;
+  color: var(--font-light);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.site-footer__column {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-footer__column a {
+  margin-bottom: 14px;
+  color: var(--footer-text);
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer__column a:hover {
+  color: var(--footer-accent);
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 30px 0px;
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text);
+  font-size: 13px;
+}
+
+.site-footer__bottom p {
+  margin: 0;
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.site-footer__legal a {
+  color: var(--footer-text);
+  text-decoration: none;
+}
+
+.site-footer__legal a:hover {
+  color: var(--footer-accent);
+}
+
+/* rev.CPSS — brand block ใหม่ (ชื่อบริษัท/tagline/LINE handle แทน paragraph + social icons เดิม)
+   และคอลัมน์ "สำนักงานใหญ่" ที่มี Google Maps embed — ใช้ .site-footer__top/__column/__heading เดิมได้เลย
+   (โครงกริด 5 คอลัมน์เดิมตรงกับ brand+4 คอลัมน์ของดีไซน์ใหม่พอดีอยู่แล้ว) */
+.site-footer__brand-name {
+  margin: 4px 0 2px;
+  color: var(--font-light);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.site-footer__tagline {
+  margin: 0 0 14px;
+  color: var(--footer-text);
+  font-size: 13px;
+}
+
+.site-footer__line-handle {
+  display: inline-block;
+  color: var(--line-green);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.site-footer__line-handle:hover {
+  text-decoration: underline;
+}
+
+.site-footer__map {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 140px;
+  margin-bottom: 12px;
+  border: 0;
+  border-radius: 12px;
+}
+
+.site-footer__address {
+  margin: 0;
+  color: var(--footer-text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.site-footer__address a {
+  color: var(--footer-accent);
+  text-decoration: none;
+}
+
+.site-footer__address a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1100px) {
+  .site-footer__top {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / -1;
+    padding-right: 0;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-footer__newsletter-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 20px;
+  }
+
+  .site-footer__newsletter-form {
+    width: 100%;
+  }
+
+  .site-footer__newsletter-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-footer__top {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    padding: 40px 20px;
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 20px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================
+   Accessibility
+================================== */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 4px solid rgb(19 90 247 / 30%);
+  outline-offset: 4px;
+}
+
+.contact-section a:focus-visible {
+  outline-color: rgb(255 255 255 / 65%);
+}
+
+/* ==================================
+   Responsive: Tablet
+================================== */
+
+@media (max-width: 1100px) {
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-footer__top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ==================================
+   Responsive: Mobile
+================================== */
+
+@media (max-width: 767px) {
+  .news-section {
+    padding: 64px 16px 72px;
+  }
+
+  .news-section__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 28px;
+    margin-bottom: 36px;
+  }
+
+  .news-section__view-all {
+    width: 100%;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .site-footer {
+    padding: 50px 20px 0;
+  }
+
+  .site-footer__top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ==================================
+   Section 8: Our Business
+================================== */
+
+.business-section {
+  padding: 50px;
+  margin-bottom: 0;
+  background-color: #ffffff;
+}
+
+.business-section__header {
+  max-width: 800px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.business-section__intro {
+  margin: 0 auto 16px;
+}
+
+/* Business Accordion — rev.44: image gallery ที่ hover แล้วขยายพร้อมเผย description (แทน card แบบไอคอน+ข้อความเดิม) */
+
+.business-accordion {
+  display: flex;
+  gap: 12px;
+  height: 460px;
+}
+
+.business-item {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  cursor: pointer;
+  outline: none;
+  transition: flex-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.business-item:hover,
+.business-item:focus-visible {
+  flex-grow: 2.4;
+}
+
+.business-item__img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.business-item:hover .business-item__img,
+.business-item:focus-visible .business-item__img {
+  transform: scale(1.08);
+}
+
+.business-item__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0%) 45%, rgb(0 0 0 / 78%) 100%);
+}
+
+.business-item__content {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  color: var(--font-light);
+}
+
+.business-item__title {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1.05rem;
+  font-weight: 800;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.business-item__desc {
+  margin: 10px 0 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  transition: max-height 0.4s ease, opacity 0.3s ease 0.05s;
+}
+
+.business-item:hover .business-item__desc,
+.business-item:focus-visible .business-item__desc {
+  max-height: 160px;
+  opacity: 1;
+}
+
+@media (max-width: 1100px) {
+  .business-accordion {
+    height: 380px;
+  }
+}
+
+@media (max-width: 767px) {
+  .business-section {
+    padding: 64px 20px 72px;
+  }
+
+  .business-accordion {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .business-item {
+    flex-grow: 1 !important;
+    height: 200px;
+  }
+
+  .business-item__img {
+    transform: none !important;
+  }
+
+  .business-item__desc {
+    max-height: 200px;
+    opacity: 1;
+  }
+}
+
+/* ==================================
+   Section 9: About Us
+================================== */
+
+.about-story__head {
+  max-width: 720px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+/* Story grid: image collage | copy */
+
+.about-story__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.about-story__collage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-story__collage-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+  aspect-ratio: 2.4 / 1;
+}
+
+.about-story__collage-item {
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* รูปในแถวบน (สัดส่วนคอลัมน์ไม่เท่ากัน) ต้องสูงเท่ากันเสมอ — คุมความสูงที่ระดับแถว (aspect-ratio ด้านบน)
+   แล้วให้แต่ละรูปยืดเต็มความสูงนั้น แทนที่จะกำหนด aspect-ratio ต่อรูป ซึ่งจะทำให้สูงไม่เท่ากันเมื่อความกว้างต่างกัน */
+.about-story__collage-row .about-story__collage-item {
+  height: 100%;
+}
+
+.about-story__collage-item--full {
+  aspect-ratio: 16 / 9;
+}
+
+.about-story__collage-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.about-story__collage-item:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+.about-story__copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-story__text {
+  margin: 0 0 20px;
+  color: var(--font-desc);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.about-story__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin-top: 12px;
+  padding: 16px 36px;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-story__cta:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.about-story__cta span {
+  font-size: 1.1em;
+}
+
+/* Feature strip — วงกลมไอคอนขอบสีน้ำเงิน CI */
+
+.about-features {
+  margin: 28px 0 32px;
+}
+
+.about-features__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.about-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+
+.about-feature__icon {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  /*border: 1.5px solid var(--primary-color);*/
+  border-radius: 50%;
+  color: var(--primary-color);
+}
+
+.about-feature__title {
+  margin: 0;
+  color: var(--font-title);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ==================================
+   Section: KV Banner "Let's Connect"
+================================== */
+
+.kv-banner {
+  position: relative;
+  overflow: hidden;
+  /*margin: 20px 50px;*/
+  padding: 0;
+  min-height: 360px;
+  /*border-radius: 20px;*/
+  /*background-color: #ffffff;*/
+}
+
+.kv-banner + .kv-banner {
+  margin-top: 0;
+}
+
+.kv-banner__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kv-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 55%);
+}
+
+.kv-banner__content {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 20px 60px;
+  text-align: center;
+}
+
+.kv-banner--align-left .kv-banner__content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.kv-banner--align-right .kv-banner__content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.kv-banner__title {
+  margin: 0;
+  color: var(--font-light);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.kv-banner__description {
+  margin: -12px 0 0;
+  max-width: 52ch;
+  color: rgb(255 255 255 / 85%);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.kv-banner__button {
+  display: inline-flex;
+  padding: 16px 48px;
+  background-color: var(--font-light);
+  color: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.kv-banner__button:hover {
+  background-color: var(--primary-soft);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .kv-banner__content {
+    padding: 64px 16px;
+    gap: 20px;
+  }
+
+  .kv-banner__button {
+    padding: 14px 36px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .about-story__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-features__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 20px;
+  }
+
+  .about-story__collage-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ==================================
+   Section: Our Partners (rev.22)
+================================== */
+
+.partners-section {
+  position: relative;
+  padding: 50px;
+  margin-bottom: 0;
+  background-color: var(--bg-product-section);
+
+}
+
+.partners-section__header {
+  max-width: 640px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.partners-section__slider {
+  position: relative;
+}
+
+.partners-section__logos {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px 56px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.partners-section__logos::-webkit-scrollbar {
+  display: none;
+}
+
+.partners-section__logo {
+  height: 100px;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.partners-section__logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+.partners-section__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+  color: var(--font-title);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.partners-section__nav:hover {
+  background-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+.partners-section__nav--prev {
+  left: -8px;
+}
+
+.partners-section__nav--next {
+  right: -8px;
+}
+
+@media (max-width: 767px) {
+  .partners-section__logos {
+    gap: 28px 32px;
+  }
+
+  .partners-section__logo {
+    height: 70px;
+  }
+
+  .partners-section__nav {
+    display: none;
+  }
+}
+
+/* ==================================
+   Section 10: Products (rev.29 — เปลี่ยนจาก Online Shop slider เป็น product grid
+   + view-more toggle, ตาม spec ที่ผู้ใช้ส่งมา; token สี alias ทับของเดิมตาม CI)
+================================== */
+
+.product-section {
+  position: relative;
+  padding: 25px 80px 50px;
+  margin-bottom: 0;
+  background-color: var(--bg-product-section);
+}
+
+.product-container {
+  position: relative;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+.product-heading {
+  max-width: 640px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.product-heading__title {
+  margin: 0 0 12px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: var(--text-primary);
+}
+
+/* Product Grid — rev.30: ปรับตามภาพ ref "What's in Season" (apéritif brand)
+   ตัดกล่องการ์ด/เงา/ขอบออกทั้งหมด เหลือ visual arch สี + typography เท่านั้น */
+
+/* rev.59 — เปลี่ยนจาก grid นิ่งๆ เป็น horizontal-scroll carousel ตามดีไซน์ที่ส่งมา
+   (การ์ดเลื่อนดูได้, ปุ่มลูกศรซ้าย/ขวา, progress bar บอกตำแหน่ง) แสดงได้สูงสุด 10 ชิ้น (คุมที่ JS ตอน fetch) */
+
+.product-carousel {
+  position: relative;
+}
+
+.product-carousel__track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.product-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.product-carousel__track .shop-card {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+}
+
+.product-carousel__footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.product-carousel__progress {
+  position: relative;
+  flex: 1 1 auto;
+  height: 3px;
+  border-radius: 5px;
+  background-color: var(--border-color);
+  overflow: hidden;
+}
+
+.product-carousel__progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  border-radius: 2px;
+  background-color: var(--primary-color);
+  transition: left 0.2s ease, width 0.2s ease;
+}
+
+.product-carousel__nav {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.product-carousel__nav-btn {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background-color: var(--bg-main);
+  color: var(--font-title);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.product-carousel__nav-btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+.product-carousel__nav-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.product-carousel__nav-btn:disabled:hover {
+  border-color: var(--border-color);
+  background-color: var(--bg-main);
+  color: var(--font-title);
+}
+
+@media (max-width: 767px) {
+  .product-carousel__track .shop-card {
+    flex-basis: 220px;
+  }
+
+  .product-carousel__nav {
+    display: none;
+  }
+}
+
+/* rev.61 — คืนค่า base rule ของ .product-grid ที่หายไปตอนแก้ carousel หน้าแรก (คนละ class กับ .product-carousel__track)
+   ใช้กับหน้า online_shop.html และ section "สินค้าที่เกี่ยวข้อง" (product-detail.html, cart.html) — แถวละ 4 ตามที่ต้องการ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* "สินค้าที่เกี่ยวข้อง" (product-detail.html, cart.html — สุ่มมาแสดง 5 รายการ) แสดง 1 แถว 5 รายการบนจอกว้าง
+   จำกัดไว้ที่ >=1200px เท่านั้น เพื่อไม่ไปทับ breakpoint มือถือ/แท็บเล็ตของ .product-grid ด้านล่าง (2 คอลัมน์/1 คอลัมน์) */
+@media (min-width: 1200px) {
+  #relatedProductGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* rev.42: การ์ดสินค้าเวอร์ชันใหม่เฉพาะหน้า Home (.shop-card)
+   ตาม design ref ใหม่ — การ์ดสี่เหลี่ยมมุมมน + Quick View + ราคา + ปุ่ม Shop with LINE
+   ใช้ class แยกจาก .product-card เดิม เพื่อไม่กระทบ cart.html / products.html ที่ยังใช้ .product-card แบบเดิมอยู่ */
+
+.shop-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 14px;
+  text-align: left;
+  scroll-margin-top: 120px;
+  border-radius: var(--card-radius, 20px);
+  background-color: #ffffff;
+  animation: productFadeIn 0.4s ease;
+}
+
+/* rev.56 — ไฮไลต์การ์ดสินค้าชั่วคราวตอนกดมาจากผลค้นหาใน header (ดู site-search.js) */
+.shop-card.is-search-highlight {
+  outline: 3px solid var(--primary-color, #1b5ef9);
+  outline-offset: 6px;
+  border-radius: var(--card-radius, 20px);
+  transition: outline-color 1.2s ease;
+}
+
+.shop-card__image-link {
+  display: block;
+}
+
+.shop-card__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 14px;
+  background-color: transparent;
+}
+
+.shop-card__image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.shop-card__image-link:hover .shop-card__image {
+  transform: scale(1.04);
+}
+
+.shop-card__quickview {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: var(--pill-radius);
+  background-color: var(--bg-main);
+  color: var(--font-title);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.shop-card:hover .shop-card__quickview {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* rev.60 — เปลี่ยน layout เป็น grid: ชื่อ / (ราคา + ปุ่ม cart วงกลม อยู่แถวเดียวกัน)
+   ใช้ display:contents ที่ .shop-card__actions ให้ลูกๆ (ปุ่ม) เข้าไปอยู่ใน grid ของ parent ได้ตรงๆ
+   โดยไม่ต้องแก้โครงสร้าง HTML เดิม (ใช้ได้ทั้งการ์ดที่ render จาก JS และการ์ด static เดิมในหน้าอื่น)
+   rev.CPSS — ตัดแถว "line" ออก (ไม่มีปุ่ม Shop with LINE แล้ว — โปรเจกต์นี้ไม่มีสั่งซื้อผ่าน LINE) */
+.shop-card__content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "name name"
+    "price cart";
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  flex-grow: 1;
+  margin-top: 14px;
+}
+
+.shop-card__name {
+  grid-area: name;
+  display: -webkit-box;
+  overflow: hidden;
+  width: 100%;
+  min-height: 2.7em;
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  overflow-wrap: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.shop-card__price {
+  grid-area: price;
+  align-self: center;
+  margin: 0;
+  color: #191c2c;
+  font-family: var(--font-family);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.shop-card__actions {
+  display: contents;
+}
+
+.shop-card__add-btn {
+  grid-area: cart;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: #14161a;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='10' cy='21' r='1.4' fill='%23ffffff'/%3E%3Ccircle cx='18' cy='21' r='1.4' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  color: transparent;
+  font-size: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.shop-card__add-btn:hover {
+  background-color: var(--primary-color);
+  color: transparent;
+  transform: translateY(-2px);
+}
+
+.shop-card__add-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  transform: none;
+}
+
+.shop-card__add-btn.is-added,
+.pdp-add-btn.is-added {
+  background-color: var(--ci-blue, #1b5ef9);
+  border-color: var(--ci-blue, #1b5ef9);
+  color: #ffffff;
+  cursor: default;
+  transform: none;
+}
+
+.shop-card__add-btn.is-added {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 18px 18px;
+}
+
+@keyframes productFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1199px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .product-section {
+    padding: 72px 20px 88px;
+  }
+
+  .product-heading {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 420px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* หน้าแรก + online_shop.html (ทั้งสองหน้าใช้ id="products" ร่วมกัน คนละไฟล์): แถวละ 2 รายการแม้จอมือถือเล็ก
+     ไม่กระทบ product-detail.html ("สินค้าที่น่าสนใจ" ใช้ id="relatedProducts" แยกต่างหาก ยังคง 1 คอลัมน์) */
+  #products .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* ==================================
+   Section 11: Hero Banner
+================================== */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  /* เว้นระยะกันเมนู fixed ทับ ย้ายไปอยู่ที่ body แทนแล้ว (ดูคอมเมนต์ที่ body) —
+     ที่นี่เหลือแค่สไตล์ของตัว section เอง ไม่ต้องมี padding-top ซ้ำอีกชั้น */
+  margin-bottom: 0;
+  background-color: #14181f;
+  color: var(--font-light);
+  font-family: var(--font-family);
+}
+
+.hero-section__container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Hero Slider — รองรับหลายแบนเนอร์ เลื่อนได้ทั้งลาก/สไลด์เอง (scroll-snap) และ auto-play (ดู script ท้ายไฟล์) */
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+}
+
+.hero-slider__track {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.hero-slider__track::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-slider__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.hero-slider__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgb(255 255 255 / 15%);
+  color: var(--font-light);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.hero-slider__nav:hover {
+  background-color: rgb(255 255 255 / 30%);
+}
+
+.hero-slider__nav--prev {
+  left: 12px;
+}
+
+.hero-slider__nav--next {
+  right: 12px;
+}
+
+.hero-slider__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.hero-slider__dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 40%);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-slider__dot:hover {
+  background-color: rgb(255 255 255 / 70%);
+}
+
+.hero-slider__dot.is-active {
+  background-color: var(--font-light);
+  transform: scale(1.15);
+}
+
+/* Hero Showcase — แบนเนอร์ขนาดอ้างอิง 1440x600px, responsive ตามความกว้างจอ (คงสัดส่วน 1440:600 = 12:5) */
+
+.hero-showcase {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 600;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.hero-showcase__bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-showcase__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    100deg,
+    rgb(10 14 26 / 65%) 0%,
+    rgb(10 14 26 / 35%) 42%,
+    rgb(10 14 26 / 0%) 70%
+  );
+}
+
+/* จัดตำแหน่ง Title/Description ได้ 3 แบบต่อแบนเนอร์ (ตั้งค่าจาก CMS) — scrim ต้องกลับด้าน/ปรับความสม่ำเสมอ
+   ตามตำแหน่งข้อความด้วย เพื่อให้ตัวหนังสือยังอ่านออกชัดเจนไม่ว่าจะอยู่ฝั่งไหนของภาพ */
+.hero-showcase--align-right .hero-showcase__scrim {
+  background: linear-gradient(
+    260deg,
+    rgb(10 14 26 / 65%) 0%,
+    rgb(10 14 26 / 35%) 42%,
+    rgb(10 14 26 / 0%) 70%
+  );
+}
+
+.hero-showcase--align-center .hero-showcase__scrim {
+  background: linear-gradient(
+    180deg,
+    rgb(10 14 26 / 20%) 0%,
+    rgb(10 14 26 / 55%) 55%,
+    rgb(10 14 26 / 20%) 100%
+  );
+}
+
+.hero-showcase__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 750px;
+  padding: 0 6%;
+}
+
+.hero-showcase--align-right .hero-showcase__overlay {
+  align-items: flex-end;
+  margin-left: auto;
+  text-align: right;
+}
+
+.hero-showcase--align-center .hero-showcase__overlay {
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-showcase__heading {
+  margin: 0 0 clamp(16px, 3vw, 28px);
+  color: var(--font-light);
+  font-size: clamp(1.5rem, 4.2vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.hero-showcase__description {
+  margin: clamp(-12px, -1.5vw, -8px) 0 clamp(16px, 3vw, 28px);
+  max-width: 46ch;
+  color: rgb(255 255 255 / 85%);
+  font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+  line-height: 1.6;
+}
+
+/* Focus */
+
+.hero-section a:focus-visible {
+  outline: 4px solid rgb(255 255 255 / 70%);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .hero-showcase__heading {
+    font-size: clamp(1.375rem, 5vw, 2rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-showcase {
+    aspect-ratio: 4 / 5;
+    min-height: 420px;
+  }
+
+  .hero-showcase__overlay {
+    max-width: none;
+    padding: 0 24px;
+  }
+
+  .hero-slider__nav {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
+/* ==================================
+   Section 12: Header / Navbar (rev.15, พื้นขาว rev.15.1)
+   วางทับพื้นหลัง Hero Banner (section แรก) — ไม่ sticky ตลอดหน้าอีกต่อไป
+================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 100%;
+  background: var(--bg-main);
+  font-family: var(--font-family);
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.25s ease, backdrop-filter 0.25s ease;
+  /*padding: 0 30px;*/
+}
+
+.site-header.is-scrolled {
+  background-color: rgb(255 255 255 / 70%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* rev.CPSS — โฉมใหม่ header ของ CPSS (topbar เข้ม + nav กรมท่า ไม่มีตะกร้า/ค้นหา) ครอบด้วย modifier
+   .site-header--cpss แทนที่จะแก้ .site-header ตรงๆ เพื่อไม่ให้หน้าอื่นที่ยังไม่ได้ propagate โดนกระทบ —
+   เมื่อทุกหน้าถูกแปลงเป็น CPSS ครบแล้วค่อยยุบ modifier นี้เข้า base class ทีเดียว */
+.site-topbar {
+  background: #060b16;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+
+.site-topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 9px 28px;
+  font-family: var(--font-family);
+  font-size: 13px;
+  color: rgb(255 255 255 / 72%);
+}
+
+.site-topbar__company {
+  font-weight: 500;
+}
+
+.site-topbar__contact {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 22px;
+}
+
+.site-topbar__line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #3fc7ff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-topbar__line:hover {
+  color: #6fe1ff;
+}
+
+.site-topbar__hotline strong {
+  margin-left: 4px;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.site-header--cpss {
+  background: linear-gradient(180deg, #101d34 0%, #0c1728 100%);
+  box-shadow: 0 6px 24px rgb(4 8 18 / 35%);
+}
+
+.site-header--cpss.is-scrolled {
+  background: linear-gradient(180deg, #101d34 0%, #0c1728 100%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-header--cpss .site-header__logo img {
+  height: 34px;
+}
+
+/* rev.CPSS — เดิม .site-header__container ใช้ justify-content:space-between กับ 3 ชิ้น (logo/nav/right)
+   ทำให้เมนูลอยอยู่กลางๆ ห่างจาก TH/EN+ปุ่ม CTA เกินไป — ตามภาพที่ผู้ใช้ส่งมา เมนูต้องอยู่ชิดกับฝั่งขวาเป็น
+   กลุ่มเดียวกับ TH/EN+ปุ่ม โลโก้อยู่ซ้ายสุด ตรงกลางเป็นพื้นที่ว่าง ไม่ใช่ตำแหน่งเมนู */
+.site-header--cpss .site-header__container {
+  justify-content: flex-start;
+}
+
+.site-header--cpss .site-header__nav {
+  margin-left: auto;
+}
+
+.site-header--cpss .site-header__nav a {
+  color: rgb(255 255 255 / 88%);
+  font-weight: 600;
+}
+
+.site-header--cpss .site-header__nav a:hover {
+  color: #6fe1ff;
+}
+
+.site-header--cpss .site-header__right {
+  gap: 16px;
+}
+
+.site-header--cpss .nav-dropdown {
+  border-color: rgb(255 255 255 / 10%);
+  background-color: #101d34;
+}
+
+.site-header--cpss .nav-dropdown__list a {
+  color: rgb(255 255 255 / 85%);
+}
+
+.site-header--cpss .nav-dropdown__list a:hover {
+  color: #6fe1ff;
+}
+
+.site-header--cpss .nav-dropdown__list li + li {
+  border-top-color: rgb(255 255 255 / 10%);
+}
+
+.site-header--cpss .site-header__lang-btn {
+  background: rgb(255 255 255 / 12%);
+}
+
+.site-header--cpss .site-header__hamburger span {
+  background-color: #ffffff;
+}
+
+.site-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 24px;
+  border-radius: var(--pill-radius);
+  background: var(--primary-color);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.site-header__cta:hover {
+  background: var(--primary-hover);
+}
+
+@media (max-width: 900px) {
+  .site-topbar__company {
+    display: none;
+  }
+
+  .site-header--cpss .site-header__nav {
+    background-color: #0c1728;
+  }
+
+  .site-header--cpss .site-header__nav a {
+    color: rgb(255 255 255 / 90%);
+  }
+
+  .site-header--cpss .site-header__nav li {
+    border-bottom-color: rgb(255 255 255 / 10%);
+  }
+}
+
+@media (max-width: 560px) {
+  .site-topbar__inner {
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+
+  .site-topbar__contact {
+    gap: 14px;
+  }
+}
+
+.site-header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 18px 28px;
+}
+
+.site-header__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.site-header__logo img {
+  display: block;
+  width: auto;
+  height: 56px;
+}
+
+/* Row 2: Dark nav bar */
+
+.site-header__nav {
+  flex-shrink: 0;
+}
+
+.site-header__nav ul {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header__nav a {
+  color: #191c2c;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-header__nav a:hover {
+  color: var(--primary-color);
+}
+
+.site-header__right {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.site-header__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #191c2c;
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.site-header__icon-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+/* Language switcher (dropdown: globe + code + chevron, opens TH/EN flag menu) */
+
+.site-header__lang-switcher {
+  position: relative;
+}
+
+.site-header__lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: #191c2c;
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.site-header__lang-btn:hover,
+.site-header__lang-btn[aria-expanded="true"] {
+  background: var(--primary-color);
+}
+
+.site-header__lang-code {
+  text-transform: uppercase;
+}
+
+.site-header__lang-chevron {
+  transition: transform 0.2s ease;
+}
+
+.site-header__lang-btn[aria-expanded="true"] .site-header__lang-chevron {
+  transform: rotate(180deg);
+}
+
+.site-header__lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 50;
+  min-width: 150px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgb(25 28 44 / 18%);
+}
+
+.site-header__lang-menu[hidden] {
+  display: none;
+}
+
+.site-header__lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.site-header__lang-option:hover {
+  background: var(--bg-secondary, #f4f3f1);
+}
+
+.site-header__lang-option.is-active {
+  background: var(--bg-secondary, #f4f3f1);
+  color: var(--primary-color);
+}
+
+.site-header__lang-option-flag {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Search bar */
+
+.site-header__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 230px;
+}
+
+.site-header__search-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 46px 0 20px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--pill-radius);
+  background-color: var(--bg-main);
+  color: #191c2c;
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+.site-header__search-input::placeholder {
+  color: var(--font-desc);
+}
+
+.site-header__search-input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.site-header__search-btn {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  bottom: 0;
+  display: flex;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--font-desc);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.site-header__search-btn:hover {
+  color: var(--primary-color);
+}
+
+.site-header__search-btn:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
+
+/* rev.56 — Live search dropdown ที่ header (ค้นหาสินค้าจาก online_shop.html) ดู site-search.js */
+.site-header__search-results {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 60;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background-color: var(--bg-main);
+  box-shadow: 0 20px 48px rgb(17 24 39 / 18%);
+}
+
+.site-header__search-results[hidden] {
+  display: none;
+}
+
+.site-header__search-results-label {
+  padding: 12px 16px 6px;
+  color: var(--font-desc);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.site-header__search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.site-header__search-result:hover,
+.site-header__search-result.is-active {
+  background-color: var(--bg-product-section);
+}
+
+.site-header__search-result-thumb {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: var(--bg-product-section);
+}
+
+.site-header__search-result-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.site-header__search-result-name {
+  overflow: hidden;
+  color: var(--font-title);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-header__search-result-name mark {
+  background-color: transparent;
+  color: var(--primary-color);
+  font-weight: 800;
+}
+
+.site-header__search-empty {
+  padding: 20px 16px;
+  color: var(--font-desc);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .site-header__search-results {
+    width: 100%;
+  }
+}
+
+/* Cart badge */
+
+.site-header__cart {
+  position: relative;
+}
+
+.site-header__cart-badge[hidden] {
+  display: none;
+}
+
+.site-header__cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: flex;
+  min-width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--bg-main);
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (max-width: 1200px) {
+  .site-header__search {
+    display: none;
+  }
+}
+
+.site-header__nav a:focus-visible,
+.site-header__icon-btn:focus-visible,
+.site-header__logo:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+/* Nav Dropdown / Mega Menu */
+
+.site-header__nav li {
+  position: relative;
+}
+
+.has-dropdown > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.has-dropdown > a::after {
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  content: "";
+}
+
+.has-dropdown:hover > a::after,
+.has-dropdown:focus-within > a::after {
+  transform: rotate(225deg);
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 50%;
+  z-index: 40;
+  min-width: 240px;
+  visibility: hidden;
+  padding: 18px;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  opacity: 0;
+  border: 1px solid rgb(51 51 51 / 10%);
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+}
+
+.has-dropdown:hover > .nav-dropdown,
+.has-dropdown:focus-within > .nav-dropdown {
+  visibility: visible;
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.nav-dropdown__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-dropdown__list li + li {
+  border-top: 1px solid rgb(51 51 51 / 8%);
+}
+
+.nav-dropdown__list a {
+  display: block;
+  padding: 10px 8px;
+  color: var(--font-title);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nav-dropdown__list a:hover {
+  color: var(--primary-color);
+}
+
+/* Mega menu variant — full width, anchored under the whole header */
+
+.nav-dropdown--mega {
+  position: fixed;
+  top: var(--header-height, 92px);
+  left: 0;
+  width: 100vw;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  transform: translateY(8px);
+  border: none;
+  border-top: 1px solid rgb(51 51 51 / 10%);
+  border-radius: 0;
+}
+
+.has-dropdown--mega:hover > .nav-dropdown--mega,
+.has-dropdown--mega:focus-within > .nav-dropdown--mega {
+  transform: translateY(0);
+}
+
+.nav-dropdown__mega-inner {
+  display: flex;
+  gap: 40px;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 32px 28px;
+}
+
+.nav-dropdown--mega .nav-dropdown__list {
+  flex-shrink: 0;
+  width: 200px;
+  padding-right: 24px;
+  border-right: 1px solid rgb(51 51 51 / 10%);
+  gap: 0;
+}
+
+.nav-dropdown__gallery {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.nav-dropdown__gallery-item {
+  position: relative;
+  display: flex;
+  aspect-ratio: 3 / 4;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: calc(var(--card-radius) - 16px);
+  background-color: var(--primary-color);
+}
+
+.nav-dropdown__gallery-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav-dropdown__gallery-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: linear-gradient(180deg, rgb(0 0 0 / 0%) 45%, rgb(0 0 0 / 65%) 100%);
+}
+
+.nav-dropdown__gallery-item .nav-dropdown__gallery-label {
+  position: relative;
+  z-index: 2;
+}
+
+.nav-dropdown__gallery-label {
+  color: var(--font-light);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+@media (max-width: 1200px) {
+  .nav-dropdown--mega {
+    min-width: 560px;
+  }
+}
+
+/* Hamburger button (mobile only) */
+
+.site-header__hamburger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.site-header__hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--font-title);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.site-header__hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.site-header__hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-header__hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .site-header__hamburger {
+    display: flex;
+  }
+
+  .site-header__search {
+    display: none;
+  }
+
+  /* Nav becomes a full-screen slide-in drawer */
+  .site-header__nav {
+    position: fixed;
+    top: var(--header-height, 92px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    overflow-y: auto;
+    padding: 0;
+    background-color: var(--bg-main);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .site-header__nav a {
+    color: var(--font-title);
+  }
+
+  .site-header__nav a:hover {
+    color: var(--primary-color);
+  }
+
+  .site-header__nav.is-open {
+    transform: translateX(0);
+  }
+
+  .site-header__nav ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 24px 24px;
+  }
+
+  .site-header__nav li {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .site-header__nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 16px 4px;
+    font-size: 16px;
+  }
+
+  /* Dropdowns become inline accordions instead of hover mega-panels */
+  .nav-dropdown {
+    position: static;
+    visibility: visible;
+    overflow: visible;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 0;
+    transform: none;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    opacity: 1;
+    transition: none;
+    display: none;
+  }
+
+  .has-dropdown.is-open > .nav-dropdown {
+    display: block;
+  }
+
+  .has-dropdown:hover > .nav-dropdown {
+    /* disable hover-trigger on touch/mobile widths */
+    visibility: hidden;
+    opacity: 0;
+    transform: none;
+  }
+
+  .has-dropdown.is-open:hover > .nav-dropdown {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .nav-dropdown--mega {
+    top: auto;
+    left: auto;
+    width: 100%;
+  }
+
+  .nav-dropdown__mega-inner {
+    flex-direction: column;
+    max-width: none;
+    padding: 4px 4px 20px;
+  }
+
+  .nav-dropdown--mega .nav-dropdown__list {
+    width: 100%;
+    max-width: none;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .nav-dropdown__list a {
+    white-space: normal;
+  }
+
+  /* rev.58 — ซ่อนภาพ gallery ใน submenu ทั้งหมดตอน mobile (ไม่ใช่แค่ .nav-dropdown__product-panel เดิม)
+     แสดงแค่รายชื่อ (.nav-dropdown__list) ล้วนๆ ตามที่ต้องการ */
+  .nav-dropdown__gallery {
+    display: none;
+  }
+
+  .has-dropdown > a::after {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header__container {
+    padding: 14px 18px;
+  }
+
+  .site-header__actions {
+    gap: 8px;
+  }
+
+  .site-header__icon-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  /* rev.CPSS — logo + lang switcher + ปุ่ม CTA + hamburger รวมกันล้นจอที่ ~375px (ปุ่ม hamburger เคยหลุด
+     ออกไปนอก viewport มองไม่เห็น/กดไม่ได้เลย) ย่อทุกชิ้นให้พอดีจอมือถือแทน */
+  .site-header--cpss .site-header__right {
+    gap: 8px;
+  }
+
+  .site-header--cpss .site-header__logo img {
+    height: 26px;
+  }
+
+  .site-header--cpss .site-header__lang-btn {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
+
+  .site-header--cpss .site-header__cta {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 12.5px;
+  }
+}
+
+/* ==================================
+   Reduced Motion
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn-primary {
+    transition: none;
+  }
+}
+
+/* ==================================
+   Section: Cart Page
+================================== */
+
+.cart-section {
+  padding: 140px 50px 80px;
+  background-color: #1a1c2c;
+}
+
+.cart-container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+.cart-section__title {
+  margin: 0;
+  color: var(--font-light);
+  font-family: var(--font-family);
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  font-weight: 800;
+}
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 28px;
+  border-radius: 36px;
+  background-color: #1a1c2c;
+}
+
+.cart-layout.is-empty {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cart-layout.is-empty .cart-summary {
+  display: none;
+}
+
+.cart-empty-state {
+  margin: 0;
+  padding: 60px 20px;
+  text-align: center;
+  color: rgb(255 255 255 / 70%);
+  font-size: 1rem;
+}
+
+.cart-empty-state a {
+  color: var(--ci-blue, #1b5ef9);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Product table */
+
+.cart-table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cart-table__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 100px 64px;
+  gap: 16px;
+  align-items: center;
+  padding: 20px 28px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+}
+
+.cart-table__col {
+  color: var(--font-desc);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.cart-table__col--qty,
+.cart-table__col--total {
+  text-align: center;
+}
+
+.cart-table__col--delete {
+  text-align: right;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px 100px 64px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+}
+
+.cart-item__product {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.cart-item__image {
+  display: flex;
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 22px;
+  background-color: var(--product-bg, var(--primary-soft));
+}
+
+.cart-item__image img {
+  /*width: 65%;
+  height: 65%;*/
+  object-fit: contain;
+}
+
+.cart-item__info {
+  min-width: 0;
+}
+
+.cart-item__name {
+  margin: 0 0 4px;
+  overflow: hidden;
+  color: var(--font-title);
+  font-size: 15px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cart-item__meta {
+  margin: 0;
+  overflow: hidden;
+  color: var(--font-desc);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cart-item__qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cart-item__qty-btn {
+  display: flex;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.cart-item__qty-btn:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.06);
+}
+
+.cart-item__qty-btn[data-action="increase"] {
+  order: 1;
+}
+
+.cart-item__qty-value {
+  order: 2;
+  min-width: 16px;
+  color: var(--font-title);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cart-item__qty-btn[data-action="decrease"] {
+  order: 3;
+}
+
+.cart-item__total {
+  color: var(--font-title);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cart-item__delete {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: #191c2c;
+  color: var(--font-light);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.cart-item__delete:hover {
+  background-color: var(--accent-pink-hover);
+  transform: scale(1.06);
+}
+
+/* Order summary */
+
+.cart-summary {
+  position: sticky;
+  top: 112px;
+  padding: 28px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+}
+
+.cart-summary__title {
+  margin: 0 0 20px;
+  color: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.cart-summary__promo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.cart-summary__promo-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 52px 0 18px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--bg-product-section);
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+.cart-summary__promo-input::placeholder {
+  color: var(--font-desc);
+}
+
+.cart-summary__promo-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cart-summary__promo-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.cart-summary__rows {
+  margin: 0 0 16px;
+}
+
+.cart-summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: var(--font-desc);
+  font-size: 14px;
+}
+
+.cart-summary__row dt {
+  font-weight: 500;
+}
+
+.cart-summary__row dd {
+  margin: 0;
+  color: var(--font-title);
+  font-weight: 700;
+}
+
+.cart-summary__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  color: var(--font-title);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.cart-summary__checkout {
+  width: 100%;
+  height: 52px;
+  margin-top: 20px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: #01b902;
+  box-shadow: var(--shadow-primary);
+  color: var(--font-light);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.cart-summary__checkout:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+
+@media (max-width: 1024px) {
+  .cart-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .cart-section {
+    padding: 120px 16px 56px;
+  }
+
+  .cart-layout {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .cart-table__header {
+    display: none;
+  }
+
+  .cart-item {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 18px;
+  }
+
+  .cart-item__qty,
+  .cart-item__total {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .cart-item__delete {
+    margin-left: 0;
+  }
+}
+
+/* ==================================
+   Section: Product Categories (online_shop.html)
+================================== */
+
+.product-intro__text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+.category-section {
+  margin-bottom: 0;
+  padding: 50px 50px 10px;
+  background-color: var(--bg-product-section);
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+.category-tile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  border: 1.5px solid var(--primary-dark);
+  border-radius: var(--pill-radius);
+  background-color: var(--bg-main);
+  background-image: none;
+  color: var(--primary-dark);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  font-size: 14px;
+}
+
+.category-tile:hover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-soft);
+}
+
+.category-tile.is-active {
+  border-color: var(--primary-dark);
+  background-color: var(--primary-dark);
+  color: var(--font-light);
+}
+
+.category-tile.is-active:hover {
+  background-color: var(--primary-dark);
+}
+
+.category-tile__label {
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Empty state */
+
+.product-empty-state {
+  margin: 12px 0 0;
+  padding: 32px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-product-section);
+  color: var(--font-desc);
+  font-size: 15px;
+  text-align: center;
+}
+
+.product-empty-state a {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.product-loading-more {
+  margin: 24px 0 0;
+  text-align: center;
+  color: var(--font-desc);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .category-section {
+    padding: 120px 16px 48px;
+  }
+
+  .category-grid {
+    gap: 8px;
+  }
+
+  .category-tile {
+    padding: 10px 18px;
+  }
+
+  .category-tile__label {
+    font-size: 13px;
+  }
+}
+
+/* ==================================
+   Section: FAQ (accordion — default collapsed)
+================================== */
+
+.faq-section {
+  padding: 72px 50px 96px;
+  background-color: var(--bg-product-section);
+}
+
+.faq-section__header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.faq-list {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  position: relative;
+  padding-top: 30px;
+}
+
+.faq-item::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4' fill='none' stroke='%2327AAE1' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 24px 8px;
+  content: "";
+}
+
+.faq-list::after {
+  display: block;
+  height: 8px;
+  margin-top: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 0 12 4 T24 4' fill='none' stroke='%2327AAE1' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 24px 8px;
+  content: "";
+}
+
+.faq-item__question {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 0 30px;
+  border: none;
+  background: transparent;
+  color: var(--primary-dark);
+  font-family: var(--font-family);
+  font-size: clamp(1.05rem, 1.6vw, 1.375rem);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.faq-item__icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-dark);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.faq-item.is-open .faq-item__icon {
+  transform: rotate(135deg);
+}
+
+.faq-item__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.faq-item__answer-inner {
+  overflow: hidden;
+}
+
+.faq-item.is-open .faq-item__answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item__answer p {
+  max-width: 640px;
+  margin: 0;
+  padding: 0 0 30px;
+  color: var(--primary-dark);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .faq-section {
+    padding: 48px 16px 64px;
+  }
+
+  .faq-item__question {
+    padding: 8px 0 24px;
+    font-size: 15px;
+  }
+
+  .faq-item__answer p {
+    padding: 0 0 24px;
+  }
+}
+
+/* ==================================
+   Section: Page Sections (page-render.js) — ระบบจัดการเพจ
+   Generic image+text block ต่อยอดจาก .about-history เดิม รองรับ 4 layout:
+   image-left / image-right / image-top / image-bottom
+================================== */
+
+.page-section {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+/* section ที่มีรูปพื้นหลัง (bg_image) ไม่ต้องมีสีพื้นทึบของ .page-section เองอีกชั้น — ไม่งั้นตอนลด
+   % ความโปร่งใส (bg_opacity) สีพื้นทึบนี้จะเผยออกมาผสมกับรูป ทำให้ดูซีดจางเป็นสีขาวแทนที่จะโปร่งแสงจริงๆ */
+.page-section--has-bg {
+  background-color: transparent;
+}
+
+/* พื้นหลัง full-bleed: เต็มความกว้างจอเสมอ ไม่ผูกกับ padding ซ้าย/ขวาของ .page-section
+   (position:absolute + inset:0 อ้างอิงจาก padding-box ของ .page-section ซึ่งเป็น <section> เต็มความกว้างอยู่แล้ว) */
+.page-section__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.page-section > .section-container,
+.page-section__custom-content {
+  position: relative;
+  z-index: 1;
+}
+
+.page-section__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.page-section__media {
+  min-width: 0;
+}
+
+/* Collage: 1-4 รูปต่อ section จัดกริดอัตโนมัติตามจำนวนรูป (อ้างอิงจาก .about-story__collage เดิม) */
+.page-section__collage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-section__collage-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.page-section__collage-row--split {
+  grid-template-columns: 1fr 1fr;
+}
+
+.page-section__collage-row--wide-narrow {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.page-section__collage-item {
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  height: 100%;
+}
+
+.page-section__collage-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.page-section__collage-item:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+/* ปิด grayscale filter ต่อ section ได้ (ตั้งค่าใน CMS > จัดการ Section) — คงเอฟเฟกต์ hover ซูมไว้เหมือนเดิม
+   แค่ตัดส่วนสีขาวดำ/เปลี่ยนเป็นสีตอน hover ออก ให้ภาพเป็นสีจริงตลอดเวลา */
+.page-section__collage--no-grayscale .page-section__collage-item img,
+.page-section__collage--no-grayscale .page-section__collage-item:hover img {
+  filter: none;
+}
+
+.page-section__collage--1 .page-section__collage-row,
+.page-section__collage--2 .page-section__collage-row {
+  aspect-ratio: 4 / 3;
+}
+
+.page-section__collage--3 .page-section__collage-row:first-child {
+  aspect-ratio: 2.4 / 1;
+}
+
+.page-section__collage--3 .page-section__collage-row:last-child {
+  aspect-ratio: 16 / 9;
+}
+
+.page-section__collage--4 .page-section__collage-row {
+  aspect-ratio: 2 / 1;
+}
+
+/* Image row: ใช้กับ layout image-top/image-bottom เท่านั้น (ต่างจาก collage ของ image-left/right) —
+   1-4 รูปเรียงแถวเดียวเสมอ ขนาดเท่ากันทุกรูป กึ่งกลางแถว จำนวนคอลัมน์ = จำนวนรูปที่ใส่จริง (auto ตามจำนวน)
+   ใช้ minmax(0, Npx) แทน fr เพื่อให้แถวไม่ยืดเต็มความกว้างเสมอ (กึ่งกลางแทนด้วย justify-content) แต่ยังหดได้
+   เต็มที่บนจอแคบโดยไม่ต้องเพิ่ม media query แยก */
+.page-section__image-row {
+  display: grid;
+  gap: 20px;
+  justify-content: center;
+}
+
+.page-section__image-row-item {
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  aspect-ratio: 1 / 1;
+}
+
+.page-section__image-row-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.page-section__image-row-item:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+.page-section__image-row--no-grayscale .page-section__image-row-item img,
+.page-section__image-row--no-grayscale .page-section__image-row-item:hover img {
+  filter: none;
+}
+
+.page-section__image-row--1 { grid-template-columns: minmax(0, 420px); }
+.page-section__image-row--2 { grid-template-columns: repeat(2, minmax(0, 320px)); }
+.page-section__image-row--3 { grid-template-columns: repeat(3, minmax(0, 260px)); }
+.page-section__image-row--4 { grid-template-columns: repeat(4, minmax(0, 220px)); }
+
+.page-section__card {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-section__title {
+  margin: 0 0 16px;
+  color: var(--font-title);
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.page-section__title--center {
+  text-align: center;
+}
+
+.page-section__title--right {
+  text-align: right;
+}
+
+.page-section__text {
+  color: var(--font-desc);
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+.page-section__text h1 {
+  margin: 1.4em 0 0.6em;
+  color: var(--font-title);
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.page-section__text h2 {
+  margin: 1.4em 0 0.6em;
+  color: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.page-section__text h3 {
+  margin: 1.4em 0 0.6em;
+  color: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.page-section__text p {
+  margin: 0 0 1em;
+}
+
+.page-section__text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--card-radius);
+  margin: 0.8em 0;
+}
+
+.page-section__text ul,
+.page-section__text ol {
+  margin: 0 0 1em;
+  padding-left: 1.4em;
+}
+
+.page-section__btn {
+  margin-top: 20px;
+}
+
+/* ปุ่ม section เลือกรูปแบบได้ 3 แบบจาก CMS (button_style): 'text-link' (ค่าเดิม — ใช้ .btn-primary ตัวเก่า
+   ไม่เปลี่ยนอะไร ให้ section ที่มีอยู่แล้วหน้าตาเดิมเป๊ะๆ), 'primary' (ปุ่มทึบ), 'primary-outline' (ปุ่มขอบ)
+   — 2 แบบหลังใหม่ ใช้ --page-section-btn-color (ตั้งจาก button_color ใน CMS ผ่าน inline style ต่อปุ่ม
+   ถ้าไม่ตั้งจะ fallback ไปสี primary ของเว็บ) เพื่อให้แก้ "สี" แยกจาก "รูปแบบ" ได้อิสระตามที่ผู้ใช้ขอ */
+.page-section__btn--primary,
+.page-section__btn--primary-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: var(--pill-radius);
+  font-family: var(--font-family);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.page-section__btn--primary {
+  border: 1.5px solid var(--page-section-btn-color, var(--primary-color));
+  background-color: var(--page-section-btn-color, var(--primary-color));
+  color: var(--font-light);
+}
+
+.page-section__btn--primary:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.page-section__btn--primary-outline {
+  border: 1.5px solid var(--page-section-btn-color, var(--primary-color));
+  background-color: transparent;
+  color: var(--page-section-btn-color, var(--primary-color));
+}
+
+.page-section__btn--primary-outline:hover {
+  background-color: var(--page-section-btn-color, var(--primary-color));
+  color: var(--font-light);
+  transform: translateY(-2px);
+}
+
+/* Quill align format (จาก rich text editor ในระบบ CMS) — ใช้ได้กับทุกจุดที่ render rich text จาก DB
+   (page sections, รายละเอียดสินค้า, เนื้อหาบทความ) ไม่ต้องผูกกับ container ใดโดยเฉพาะ */
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
+}
+
+.ql-align-justify {
+  text-align: justify;
+}
+
+/* image-left: รูปอยู่คอลัมน์ซ้าย ข้อความคอลัมน์ขวา (เรียงข้างกันปกติ ไม่ทับกัน) */
+.page-section--image-left .page-section__media {
+  order: 1;
+}
+
+.page-section--image-left .page-section__card {
+  order: 2;
+}
+
+/* image-right: สลับคอลัมน์ รูปอยู่ขวา ข้อความอยู่ซ้าย */
+.page-section--image-right .page-section__media {
+  order: 2;
+}
+
+.page-section--image-right .page-section__card {
+  order: 1;
+}
+
+/* image-top / image-bottom: บังคับ 1 คอลัมน์เสมอ (ไม่ว่าจอขนาดไหน) สลับตำแหน่งรูป/ข้อความ */
+.page-section--image-top .page-section__grid,
+.page-section--image-bottom .page-section__grid {
+  grid-template-columns: 1fr;
+}
+
+.page-section--image-top .page-section__media {
+  order: 1;
+}
+
+.page-section--image-top .page-section__card {
+  order: 2;
+}
+
+.page-section--image-bottom .page-section__media {
+  order: 2;
+}
+
+.page-section--image-bottom .page-section__card {
+  order: 1;
+}
+
+@media (max-width: 1024px) {
+  .page-section__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .page-section--image-left .page-section__media,
+  .page-section--image-right .page-section__media {
+    order: 1;
+  }
+
+  .page-section--image-left .page-section__card,
+  .page-section--image-right .page-section__card {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .page-section__collage-row--wide-narrow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .page-section__collage--3 .page-section__collage-row:first-child {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+
+/* ==================================
+   Section: Contact Us Page (contact.html)
+================================== */
+
+.contact-map-hero__frame {
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hero + form */
+
+.contact-hero {
+  padding: 50px 100px;
+  background-color: var(--bg-main);
+}
+
+.contact-hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 56px;
+}
+
+.contact-hero__text {
+  margin: 0;
+  /*max-width: 460px;*/
+  color: var(--font-desc);
+  font-size: 15px;
+  line-height: 2;
+}
+
+.contact-social {
+  margin-top: 28px;
+}
+
+.contact-social__label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--font-title);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.contact-social__icons {
+  display: flex;
+  gap: 10px;
+}
+
+.contact-social__icon {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--font-light);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.contact-social__icon:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.contact-social__icon--facebook {
+  background-color: #1877f2;
+}
+
+.contact-social__icon--instagram {
+  background-image: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+}
+
+.contact-social__icon--line {
+  background-color: #06c755;
+}
+
+.contact-social__icon--tiktok {
+  background-color: #000000;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+  box-shadow: var(--shadow-card);
+}
+
+.contact-form__input,
+.contact-form__textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 14px;
+  background-color: #f6f7fc;
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+  resize: vertical;
+}
+
+.contact-form__input::placeholder,
+.contact-form__textarea::placeholder {
+  color: var(--font-desc);
+}
+
+/* rev.54 — inline validation (Name/Phone/Message required) */
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-form__label {
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.contact-form__label .required-asterisk {
+  margin-left: 3px;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.contact-form__error {
+  display: none;
+  color: #dc2626;
+  font-size: 12.5px;
+}
+
+.contact-form__field.is-invalid .contact-form__input,
+.contact-form__field.is-invalid .contact-form__textarea {
+  box-shadow: 0 0 0 1.5px #dc2626 inset;
+}
+
+.contact-form__field.is-invalid .contact-form__error {
+  display: block;
+}
+
+.contact-form__submit {
+  align-self: flex-start;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  box-shadow: var(--shadow-primary);
+  color: var(--font-light);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-form__submit:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* Info cards */
+
+.contact-info-card__icon {
+  /*display: flex;*/
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  /*background-color: var(--primary-soft);*/
+  color: var(--primary-color);
+  padding: 10px;
+}
+
+/* FAQ + ask a question */
+
+.contact-faq {
+  padding: 72px 50px;
+}
+
+.contact-faq__grid {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-faq__list-col {
+  text-align: center;
+}
+
+.contact-faq__accordion {
+  text-align: left;
+}
+
+.contact-faq__title {
+  margin: 10px 0 28px;
+  color: var(--font-title);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+}
+
+.contact-faq__intro-text {
+  margin: 0 0 28px;
+  color: var(--font-desc);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.contact-faq__accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-faq__item {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.contact-faq__item:first-child {
+  border-top: 1px solid var(--border-color);
+}
+
+.contact-faq__question {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 4px;
+  border: none;
+  background: transparent;
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.contact-faq__icon {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--primary-soft);
+  color: var(--primary-color);
+  font-size: 14px;
+  transition: transform 0.25s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-faq__item.is-open .contact-faq__icon {
+  transform: rotate(135deg);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+}
+
+.contact-faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.contact-faq__answer-inner {
+  overflow: hidden;
+}
+
+.contact-faq__item.is-open .contact-faq__answer {
+  grid-template-rows: 1fr;
+}
+
+.contact-faq__answer p {
+  margin: 0;
+  padding: 0 4px 18px;
+  color: var(--font-desc);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* CTA banner */
+
+.contact-cta {
+  padding: 72px 50px;
+  background-color: var(--primary-dark);
+  text-align: center;
+}
+
+.contact-cta__title {
+  margin: 0 0 20px;
+  color: var(--font-light);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.contact-cta__meta {
+  margin: 0 0 28px;
+  color: rgb(255 255 255 / 80%);
+  font-size: 14px;
+}
+
+.contact-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.contact-cta__btn {
+  padding: 14px 28px;
+  border-radius: var(--pill-radius);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.contact-cta__btn--outline {
+  border: 1.5px solid rgb(255 255 255 / 50%);
+  background: transparent;
+  color: var(--font-light);
+}
+
+.contact-cta__btn--outline:hover {
+  background-color: rgb(255 255 255 / 10%);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  .contact-hero__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-hero,
+  .contact-faq,
+  .contact-cta {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .contact-map-hero__frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  .contact-hero {
+    padding-top: 48px;
+  }
+}
+
+/* ==================================
+   Section: Career Page (career.html)
+================================== */
+
+/* Features */
+
+.career-features {
+  padding: 72px 50px;
+  background-color: var(--bg-main);
+}
+
+.career-features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  text-align: center;
+}
+
+.career-feature__icon {
+  display: inline-flex;
+  margin-bottom: 16px;
+  color: var(--primary-color);
+}
+
+.career-feature__title {
+  margin: 0 0 10px;
+  color: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.career-feature__text {
+  margin: 0;
+  color: var(--font-desc);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Company intro (บริษัท CP B&F ดีอย่างไร?) */
+
+.career-intro {
+  padding: 72px 50px;
+  background-color: var(--bg-main);
+}
+
+.career-intro__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.career-intro__media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--card-radius);
+  object-fit: cover;
+}
+
+/* Benefit */
+
+.career-benefits {
+  padding: 72px 50px;
+  background-color: var(--primary-color);
+}
+
+.career-benefits__head {
+  max-width: 640px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.career-benefits__head .web-title {
+  margin-bottom: 0;
+}
+
+.career-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.career-benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 20px;
+  border-radius: var(--card-radius);
+  background-color: var(--bg-main);
+  box-shadow: 0 16px 36px rgb(17 24 39 / 8%);
+  text-align: center;
+}
+
+.career-benefit__icon {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background-color: var(--ci-blue);
+  color: var(--font-light);
+}
+
+.career-benefit__title {
+  margin: 0;
+  color: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+/* Apply now */
+
+.career-apply {
+  padding: 72px 50px;
+  background-color: var(--ci-blue);
+  color: var(--font-light);
+}
+
+.career-apply__grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.career-apply__media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--card-radius);
+  object-fit: cover;
+}
+
+.career-apply__title {
+  margin: 0 0 28px;
+  color: var(--font-light);
+}
+
+.career-apply__form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.career-apply__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.career-apply__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.career-apply__field > span {
+  color: rgb(255 255 255 / 85%);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.career-apply__field input,
+.career-apply__field select,
+.career-apply__field textarea {
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--font-light);
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+}
+
+.career-apply__field select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.career-apply__field textarea {
+  min-height: 120px;
+  border-radius: 20px;
+  resize: vertical;
+}
+
+.career-apply__field input::placeholder,
+.career-apply__field textarea::placeholder {
+  color: rgb(51 51 51 / 45%);
+}
+
+.career-apply__field input:focus,
+.career-apply__field select:focus,
+.career-apply__field textarea:focus {
+  outline: 2px solid var(--ci-blue);
+  outline-offset: 2px;
+}
+
+/* Custom dropdown (แทน native <select> เพราะ list ที่กางออกของ select ถูก OS วาดเอง คุมฟอนต์ไม่ได้) */
+
+.custom-select {
+  position: relative;
+}
+
+.custom-select__trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--font-light);
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.custom-select__trigger[data-placeholder="true"] {
+  color: rgb(51 51 51 / 45%);
+}
+
+.custom-select__trigger:focus-visible {
+  outline: 2px solid var(--ci-blue);
+  outline-offset: 2px;
+}
+
+.custom-select__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.custom-select.is-open .custom-select__chevron {
+  transform: rotate(180deg);
+}
+
+.custom-select__list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  max-height: 280px;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  border-radius: 18px;
+  background-color: var(--font-light);
+  box-shadow: 0 24px 48px rgb(0 0 0 / 30%);
+  list-style: none;
+}
+
+.custom-select__list[hidden] {
+  display: none;
+}
+
+.custom-select__list li {
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--font-title);
+  font-family: var(--font-family);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.custom-select__list li:hover,
+.custom-select__list li.is-active {
+  background-color: var(--ci-blue);
+  color: var(--font-light);
+}
+
+.career-apply__file {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.career-apply__file-btn {
+  position: relative;
+  flex-shrink: 0;
+  padding: 12px 22px;
+  border-radius: var(--pill-radius);
+  background-color: rgb(255 255 255 / 12%);
+  color: var(--font-light);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.career-apply__file-btn:hover {
+  background-color: rgb(255 255 255 / 20%);
+}
+
+/* rev.57 — disable ปุ่มแนบไฟล์เมื่อครบ 3 ไฟล์แล้ว */
+.career-apply__file-btn.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.career-apply__file-btn input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.career-apply__file-hint {
+  color: rgb(255 255 255 / 55%);
+  font-size: 12px;
+}
+
+.career-apply__file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.career-apply__file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background-color: rgb(255 255 255 / 8%);
+}
+
+.career-apply__file-item-name {
+  overflow: hidden;
+  color: var(--font-light);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.career-apply__file-item-remove {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 15%);
+  color: var(--font-light);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.career-apply__file-item-remove:hover {
+  background-color: #ef4444;
+}
+
+.career-apply__submit {
+  align-self: flex-start;
+  padding: 14px 44px;
+  border: none;
+  border-radius: var(--pill-radius);
+  background-color: var(--font-light);
+  color: var(--ci-blue);
+  font-family: var(--font-family);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.career-apply__submit:hover {
+  background-color: var(--font-light);
+  transform: translateY(-2px);
+}
+
+.career-apply__note {
+  margin: 4px 0 0;
+  color: rgb(255 255 255 / 60%);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.career-apply__note a {
+  color: var(--font-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .career-features__grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .career-intro__grid,
+  .career-apply__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .career-intro__media {
+    order: -1;
+  }
+
+  .career-benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .career-features {
+    padding: 56px 16px;
+  }
+
+  .career-intro,
+  .career-benefits,
+  .career-apply {
+    padding: 56px 20px;
+  }
+
+  .career-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .career-apply__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================
+   Section: Newsroom Page — "The Blog" style (newsroom.html)
+================================== */
+
+/* Latest updates grid */
+
+.blog-grid-section {
+  padding: 50px 80px;
+  background-color: var(--bg-main);
+}
+
+/* Filter pills — reuse .category-tile component (เหมือนหน้า products.html) */
+
+.blog-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 36px;
+  justify-content: center;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 28px;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card[hidden] {
+  display: none;
+}
+
+.blog-card__image-link {
+  position: relative;
+  z-index: 1;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+}
+
+.blog-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.blog-card__image-link:hover .blog-card__image {
+  transform: scale(1.05);
+}
+
+/* rev.51 — การ์ดเนื้อหาสีขาวลอยทับขอบล่างของรูป (margin-top ติดลบ) ตามภาพตัวอย่างที่ให้มา */
+.blog-card__body {
+  position: relative;
+  z-index: 2;
+  margin: -36px 14px 0;
+  padding: 18px 18px 20px;
+  border-radius: 16px;
+  background-color: var(--bg-main);
+  box-shadow: 0 16px 32px rgb(17 24 39 / 10%);
+}
+
+.blog-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 10px;
+  color: var(--font-desc);
+  font-size: 12.5px;
+}
+
+.blog-card__meta svg {
+  flex-shrink: 0;
+  color: var(--primary-color);
+}
+
+.blog-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.blog-card__title a {
+  color: var(--font-title);
+  text-decoration: none;
+}
+
+.blog-card__title a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.blog-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0 0 14px;
+  color: var(--font-desc);
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-card__readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary-color);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.blog-card__readmore span {
+  transition: transform 0.2s ease;
+}
+
+.blog-card__readmore:hover span {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-grid-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .blog-filter {
+    gap: 10px;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================
+   Section: News Detail Page (news-*.html)
+================================== */
+
+.news-detail {
+  padding: 80px 50px 0;
+  background-color: var(--bg-main);
+}
+
+.news-detail__intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+/* rev.53 — หมวดหมู่อยู่บนสุด กึ่งกลาง เหนือหัวข้อ (ไม่มีวันที่ตรงนี้แล้ว ย้ายไปคู่กับเนื้อหาด้านล่าง) */
+.news-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.news-detail__category {
+  display: inline-flex;
+  padding: 6px 16px;
+  border-radius: var(--pill-radius);
+  background-color: var(--primary-color);
+  color: var(--font-light);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.news-detail__title {
+  margin: 0 0 16px;
+  color: var(--font-title);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.news-detail__subtitle {
+  margin: 0;
+  color: var(--font-desc);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.news-detail__hero {
+  overflow: hidden;
+  aspect-ratio: 16 / 8;
+  margin-bottom: 48px;
+  border-radius: var(--card-radius);
+}
+
+.news-detail__hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* rev.53 — คอลัมน์ Share (ซ้าย) + เนื้อหา (ขวา) ตามภาพตัวอย่าง */
+.news-detail__content-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 72px;
+  align-items: start;
+}
+
+.news-detail__share {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.news-detail__share-label {
+  color: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.news-detail__share-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.news-detail__share-btn {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #ffffff;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.news-detail__share-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.news-detail__share-btn--facebook {
+  background-color: #1877f2;
+}
+
+.news-detail__share-btn--line {
+  background-color: var(--line-green);
+}
+
+.news-detail__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  color: var(--font-desc);
+  font-size: 13px;
+}
+
+.news-detail__date svg {
+  flex-shrink: 0;
+  color: var(--primary-color);
+}
+
+.news-detail__body p {
+  margin: 0 0 20px;
+  color: var(--font-desc);
+  font-size: 15.5px;
+  line-height: 1.8;
+}
+
+.news-detail__body h1 {
+  margin: 44px 0 16px;
+  color: var(--font-title);
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.news-detail__body h2 {
+  margin: 36px 0 14px;
+  color: var(--font-title);
+  font-size: 1.375rem;
+  font-weight: 800;
+}
+
+.news-detail__body h3 {
+  margin: 30px 0 12px;
+  color: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.news-detail__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 8px 0 20px;
+}
+
+/* Read Our Next Article */
+
+.news-detail__next {
+  padding: 64px 50px 80px;
+  background-color: var(--bg-product-section);
+}
+
+.news-detail__next-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.news-detail__next-title {
+  margin: 0;
+  color: var(--font-title);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+}
+
+.news-detail__next-grid {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.news-detail__next-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.news-detail__next-grid .blog-card {
+  position: relative;
+}
+
+.news-detail__next-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+@media (max-width: 1024px) {
+  .news-detail__next-grid {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(240px, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .news-detail,
+  .news-detail__next {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .news-detail__hero {
+    aspect-ratio: 4 / 3;
+  }
+
+  .news-detail__content-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .news-detail__share {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .news-detail__share-links {
+    flex-direction: row;
+  }
+
+  .news-detail__next-grid {
+    grid-auto-columns: minmax(200px, 1fr);
+  }
+}
+
+/* ==================================
+   CPSS Homepage sections (custom-html ผ่าน CMS > จัดการเพจ > หน้าแรก)
+   อ้างอิงดีไซน์จาก https://cpss-service-th.pawinee-patch.chatgpt.site/ — ดึงสี/สเปซจริงจาก CSS ที่ compile
+   แล้วของเว็บนั้น (--navy:#06182d --blue:#0878bc --cyan:#09a1dc --ink:#11243a --muted:#617185 --line:#d9e3eb)
+   ทุกคลาส prefix ด้วย "ch-" (CPSS Home) กันชนกับคลาสเดิมทั้งเว็บที่ใช้ชื่อสามัญเหมือนกัน (.hero/.section/
+   .button/.about/.contact ฯลฯ มีอยู่แล้วหลายที่ในไฟล์นี้) — เนื้อหาจริงอยู่ใน page_sections.body_th
+   (layout='custom-html') ไม่ใช่ static markup ในหน้า index.html เอง ดู cms/seed-cpss-home-sections.sql
+================================== */
+
+.ch-shell {
+  width: min(1180px, 100% - 40px);
+  margin-inline: auto;
+}
+
+.ch-eyebrow {
+  margin: 0 0 14px;
+  color: #0878bc;
+  letter-spacing: 0.18em;
+  font-size: 0.73rem;
+  font-weight: 800;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.ch-eyebrow--light {
+  color: #74cff5;
+}
+
+.ch-centers .ch-eyebrow--light {
+  color: #0878bc;
+}
+
+.ch-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 13px 21px;
+  border: 0;
+  background: linear-gradient(135deg, #0878bc, #09a1dc);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-weight: 750;
+  line-height: 1.45;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 12px 30px rgb(1 102 165 / 22%);
+}
+
+.ch-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+}
+
+.ch-button--ghost {
+  background: transparent;
+  border: 1px solid rgb(255 255 255 / 38%);
+  box-shadow: none;
+}
+
+.ch-button--white {
+  background: #ffffff;
+  color: #0b2b4d;
+  box-shadow: none;
+}
+
+.ch-section {
+  padding: 96px 0;
+}
+
+.ch-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.ch-section-heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.9vw, 3.2rem);
+  line-height: 1.27;
+  color: inherit;
+}
+
+.ch-section-heading > p {
+  width: min(500px, 100%);
+  margin: 0 0 7px;
+  color: #617185;
+  line-height: 1.8;
+}
+
+/* Hero */
+
+.ch-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 760px;
+  background: #06182d;
+  color: #ffffff;
+}
+
+.ch-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(3 16 31 / 98%) 1%, rgb(3 16 31 / 84%) 48%, rgb(3 16 31 / 22%) 78%, rgb(3 16 31 / 48%)),
+    url("raw/assets/assets/hero-repair-v2.png") center 44% / cover no-repeat;
+}
+
+.ch-hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 0.62fr;
+  align-items: center;
+  gap: 80px;
+  min-height: 650px;
+  padding: 40px 0;
+}
+
+.ch-hero h1 {
+  margin: 16px 0 24px;
+  letter-spacing: -0.045em;
+  font-size: clamp(2.6rem, 5.8vw, 4.6rem);
+  line-height: 1.18;
+  color: #ffffff;
+}
+
+.ch-hero h1 span {
+  color: #62c8f1;
+}
+
+.ch-hero-lead {
+  max-width: 680px;
+  margin: 0;
+  color: #c2d0dd;
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.ch-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.ch-hero-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  color: #bed0df;
+  font-size: 0.86rem;
+}
+
+.ch-hero-points i {
+  margin-right: 5px;
+  color: #4dd0a0;
+  font-style: normal;
+}
+
+.ch-dispatch-card {
+  align-self: end;
+  margin-bottom: 42px;
+  padding: 30px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  background: rgb(7 35 64 / 84%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ch-dispatch-card .ch-live {
+  display: flex;
+  align-items: center;
+  color: #73d7b0;
+  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.ch-dispatch-card .ch-live span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #45d19b;
+  box-shadow: 0 0 0 5px rgb(69 209 155 / 14%);
+}
+
+.ch-dispatch-card h2 {
+  margin: 26px 0 8px;
+  color: #ffffff;
+  font-size: 1.75rem;
+}
+
+.ch-dispatch-card p {
+  margin: 0;
+  color: #b8cada;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.ch-dispatch-card > a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid rgb(255 255 255 / 15%);
+  text-decoration: none;
+}
+
+.ch-dispatch-card small {
+  grid-column: 1;
+  color: #82a2be;
+}
+
+.ch-dispatch-card strong {
+  display: block;
+  grid-column: 1;
+  color: #ffffff;
+  font-size: 1.32rem;
+}
+
+.ch-dispatch-card em {
+  grid-area: 1 / 2 / 3;
+  align-self: end;
+  color: #69caf2;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ch-hero-strip {
+  position: relative;
+  z-index: 3;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  background: rgb(6 30 55 / 95%);
+}
+
+.ch-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 110px;
+}
+
+.ch-strip-grid div {
+  padding: 22px 24px;
+  border-right: 1px solid rgb(255 255 255 / 10%);
+}
+
+.ch-strip-grid div:first-child {
+  border-left: 1px solid rgb(255 255 255 / 10%);
+}
+
+.ch-strip-grid strong {
+  display: block;
+  color: #67c9f1;
+  font-size: 1.45rem;
+}
+
+.ch-strip-grid span {
+  color: #acc0d2;
+  font-size: 0.79rem;
+}
+
+/* About / Vision & Mission */
+
+.ch-about {
+  background: #06182d;
+  color: #ffffff;
+}
+
+.ch-about-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: 70px;
+}
+
+.ch-about-media {
+  position: relative;
+  height: 480px;
+}
+
+.ch-about-media::before {
+  content: "";
+  position: absolute;
+  inset: -14px auto auto -14px;
+  z-index: 2;
+  width: 50%;
+  height: 50%;
+  border-top: 2px solid #09a1dc;
+  border-left: 2px solid #09a1dc;
+}
+
+.ch-about-media > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch-about-media > div {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 17px 20px;
+  background: rgb(3 18 34 / 88%);
+}
+
+.ch-about-media div b {
+  color: #70ccf2;
+  font-size: 2rem;
+}
+
+.ch-about-media div span {
+  padding-left: 18px;
+  border-left: 1px solid #496175;
+  color: #b7cada;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.ch-about-copy .ch-lead {
+  margin: 25px 0;
+  color: #b7c8d7;
+  line-height: 1.85;
+}
+
+.ch-vision-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ch-vision-mission article {
+  padding: 20px;
+  border-top: 2px solid #09a1dc;
+  background: rgb(255 255 255 / 5%);
+}
+
+.ch-vision-mission small {
+  color: #69caf2;
+  font-weight: 800;
+}
+
+.ch-vision-mission h3 {
+  margin: 8px 0 5px;
+  color: #ffffff;
+}
+
+.ch-vision-mission p {
+  margin: 0;
+  color: #b4c7d7;
+  font-size: 0.84rem;
+  line-height: 1.75;
+}
+
+/* Services */
+
+.ch-services {
+  background: #ffffff;
+}
+
+.ch-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.ch-service-card {
+  border: 1px solid #d9e3eb;
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.ch-service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgb(16 44 71 / 12%);
+}
+
+.ch-service-photo {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background: #dfe8ee;
+}
+
+.ch-service-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ch-service-photo span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 8px 13px;
+  background: #0878bc;
+  color: #ffffff;
+  font-size: 0.77rem;
+  font-weight: 800;
+}
+
+.ch-service-content {
+  padding: 23px;
+}
+
+.ch-service-content small {
+  color: #09a1dc;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+}
+
+.ch-service-content h3 {
+  margin: 8px 0;
+  color: #11243a;
+  font-size: 1.18rem;
+  line-height: 1.45;
+}
+
+.ch-service-content p {
+  min-height: 74px;
+  color: #617185;
+  font-size: 0.87rem;
+  line-height: 1.75;
+}
+
+.ch-service-content a {
+  color: #0878bc;
+  font-size: 0.87rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Business */
+
+.ch-business {
+  background: #f1f6f9;
+}
+
+.ch-business-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.ch-business-grid article {
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid #0878bc;
+  background: #f3f7fa;
+}
+
+.ch-business-grid article > span {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  padding: 6px 9px;
+  background: #0878bc;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.ch-business-grid img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.ch-business-grid h3 {
+  margin: 24px 28px 8px;
+  color: #11243a;
+  font-size: 1.45rem;
+}
+
+.ch-business-grid p {
+  margin: 0;
+  padding: 0 28px 28px;
+  color: #617185;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.ch-business-grid a {
+  display: block;
+  margin: -14px 28px 28px;
+  color: #0878bc;
+  font-size: 0.87rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Parts teaser */
+
+.ch-parts-teaser {
+  background: linear-gradient(115deg, #092846, #06182d);
+  color: #ffffff;
+}
+
+.ch-parts-teaser-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 70px;
+}
+
+.ch-parts-teaser p:not(.ch-eyebrow):not(.ch-eyebrow--light) {
+  color: #b9cbd9;
+  line-height: 1.85;
+}
+
+.ch-parts-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.ch-parts-preview img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: top;
+  box-shadow: 0 24px 55px rgb(0 0 0 / 28%);
+}
+
+.ch-parts-preview img:last-child {
+  transform: translateY(28px);
+}
+
+/* Centers / map */
+
+.ch-centers {
+  background: #e9f1f6;
+}
+
+.ch-centers-map-grid {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  align-items: center;
+  gap: 70px;
+}
+
+.ch-map-card {
+  padding: 18px;
+  background: #ffffff;
+  box-shadow: 0 22px 55px rgb(5 35 60 / 13%);
+}
+
+.ch-map-card img {
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+}
+
+.ch-map-card span {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #d9e3eb;
+  color: #d84a4a;
+  font-size: 0.78rem;
+}
+
+.ch-center-intro {
+  color: #617185;
+  line-height: 1.8;
+}
+
+.ch-region-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ch-region-list article {
+  padding: 17px 19px;
+  border-left: 4px solid #0878bc;
+  background: #ffffff;
+}
+
+.ch-region-list article:first-child {
+  grid-column: 1 / -1;
+}
+
+.ch-region-list h3 {
+  margin: 0 0 4px;
+  color: #11243a;
+  font-size: 1rem;
+}
+
+.ch-region-list p {
+  margin: 0;
+  color: #617185;
+  font-size: 0.81rem;
+  line-height: 1.7;
+}
+
+/* Contact */
+
+.ch-contact {
+  background: #dfeaf2;
+}
+
+.ch-contact-grid {
+  display: grid;
+  grid-template-columns: 0.78fr 1.22fr;
+  box-shadow: 0 28px 70px rgb(7 35 62 / 14%);
+}
+
+.ch-contact-info {
+  padding: 42px;
+  background: #071c33;
+  color: #ffffff;
+}
+
+.ch-contact-info > p:not(.ch-eyebrow):not(.ch-eyebrow--light) {
+  color: #afc3d3;
+  line-height: 1.8;
+}
+
+.ch-contact-lines {
+  margin-top: 34px;
+}
+
+.ch-contact-lines > a {
+  display: block;
+  padding: 16px 0;
+  border-top: 1px solid rgb(255 255 255 / 13%);
+  text-decoration: none;
+}
+
+.ch-contact-lines small {
+  display: block;
+  color: #6acaf2;
+  letter-spacing: 0.12em;
+  font-size: 0.67rem;
+}
+
+.ch-contact-lines strong {
+  color: #ffffff;
+  font-size: 0.98rem;
+}
+
+.ch-request-form {
+  padding: 40px;
+  background: #ffffff;
+}
+
+.ch-form-title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #d9e3eb;
+  color: #0878bc;
+  letter-spacing: 0.14em;
+  font-size: 0.71rem;
+  font-weight: 800;
+}
+
+.ch-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
+.ch-form-grid label {
+  display: block;
+  color: #11243a;
+  font-size: 0.81rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.ch-form-grid input,
+.ch-form-grid select,
+.ch-form-grid textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px 13px;
+  border: 1px solid #ccd9e3;
+  background: #fafdff;
+  color: #11243a;
+  font-family: var(--font-family);
+  font-size: 0.92rem;
+  outline: 0;
+}
+
+.ch-form-grid input:focus,
+.ch-form-grid select:focus,
+.ch-form-grid textarea:focus {
+  border-color: #09a1dc;
+  box-shadow: 0 0 0 3px rgb(9 161 220 / 10%);
+}
+
+.ch-form-grid textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+.ch-form-grid .ch-full {
+  grid-column: 1 / -1;
+}
+
+.ch-submit {
+  width: 100%;
+  margin-top: 19px;
+  border-radius: 25px;
+}
+
+.ch-privacy {
+  display: block;
+  margin-top: 10px;
+  color: #758596;
+  font-size: 0.69rem;
+}
+
+.ch-form-status {
+  display: none;
+  margin: 13px 0 0;
+  padding: 12px 14px;
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.ch-form-status.is-visible {
+  display: block;
+}
+
+.ch-form-status.is-success {
+  background: #e5f8f0;
+  color: #166f52;
+}
+
+.ch-form-status.is-error {
+  background: #fdecea;
+  color: #b3261e;
+}
+
+@media (max-width: 1040px) {
+  .ch-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-dispatch-card {
+    display: none;
+  }
+
+  .ch-service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ch-about-grid,
+  .ch-centers-map-grid,
+  .ch-contact-grid,
+  .ch-parts-teaser-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-about-media {
+    height: 380px;
+  }
+}
+
+@media (max-width: 680px) {
+  .ch-hero {
+    min-height: 0;
+  }
+
+  .ch-hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .ch-strip-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ch-section {
+    padding: 64px 0;
+  }
+
+  .ch-section-heading {
+    display: block;
+  }
+
+  .ch-service-grid,
+  .ch-business-grid,
+  .ch-vision-mission,
+  .ch-region-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-parts-preview img {
+    height: 220px;
+  }
+
+  .ch-contact-info,
+  .ch-request-form {
+    padding: 24px 20px;
+  }
+
+  .ch-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-form-grid .ch-full,
+  .ch-region-list article:first-child {
+    grid-column: auto;
+  }
+}
+

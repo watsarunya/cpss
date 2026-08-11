@@ -1,0 +1,1700 @@
+/* CP B&F CMS — shared styles */
+
+:root {
+  --cms-primary: #1b5ef9;
+  --cms-primary-hover: #191c2c;
+  --cms-primary-soft: #f7f8fc;
+  --cms-bg: #f5f6fa;
+  --cms-card: #ffffff;
+  --cms-border: #e6e8f0;
+  --cms-text: #1f2233;
+  --cms-text-soft: #6b7085;
+  --cms-text-faint: #9698a8;
+  --cms-green: #1a9c5c;
+  --cms-red: #e0433d;
+  --cms-radius: 14px;
+  --cms-shadow: 0 4px 24px rgb(31 34 51 / 6%);
+  --cms-font: "IBM Plex Sans Thai", "Inter", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--cms-bg);
+  color: var(--cms-text);
+  font-family: var(--cms-font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ===== Layout ===== */
+.section-footer {
+  border-bottom: 1px solid var(--cms-border);
+  padding-top: 10px;
+}
+
+.cms-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.cms-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 248px;
+  flex-shrink: 0;
+  padding: 22px 16px;
+  background: var(--cms-card);
+  border-right: 1px solid var(--cms-border);
+  /* sticky แทน fixed เพราะ .cms-sidebar เป็น flex item ของ .cms-shell อยู่แล้ว — ไม่ต้องคำนวณ
+     margin-left ของ .cms-main เอง (flexbox จัดการความกว้างที่เหลือให้อัตโนมัติ) */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: width 0.15s ease;
+}
+
+.cms-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 22px;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--cms-text);
+}
+
+.cms-sidebar__logo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 28px;
+}
+
+.cms-sidebar__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--cms-text-soft);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cms-sidebar__toggle:hover {
+  background: var(--cms-bg);
+  color: var(--cms-text);
+}
+
+/* ===== Sidebar ย่อ (icon-only) ===== */
+
+.cms-sidebar.is-collapsed {
+  width: 76px;
+}
+
+.cms-sidebar.is-collapsed .cms-sidebar__logo {
+  justify-content: center;
+  padding: 0 0 22px;
+}
+
+/* rev.CPSS — โลโก้ CPSS เป็น wordmark แนวนอน (2196x608, ไม่ใช่โลโก้เกือบสี่เหลี่ยมจัตุรัสแบบเดิม) ตอน sidebar
+   ย่อเหลือ 76px ถ้าใช้ max-height เดิม (28px) ความกว้างจะ ~101px ล้นกรอบ — ย่อ max-height ลงอีกตอน collapsed */
+.cms-sidebar.is-collapsed .cms-sidebar__logo img {
+  max-height: 18px;
+}
+
+.cms-sidebar.is-collapsed .cms-sidebar__toggle {
+  margin-left: 0;
+}
+
+.cms-sidebar.is-collapsed .cms-nav__label,
+.cms-sidebar.is-collapsed .cms-nav__group-label {
+  display: none;
+}
+
+.cms-sidebar.is-collapsed .cms-nav__item {
+  justify-content: center;
+  padding: 10px;
+}
+
+.cms-sidebar.is-collapsed .cms-nav__item--sub {
+  padding-left: 10px;
+}
+
+.cms-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cms-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  color: var(--cms-text-soft);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.cms-nav__item:hover {
+  background: var(--cms-bg);
+  color: var(--cms-text);
+}
+
+.cms-nav__item.is-active {
+  background: var(--cms-primary-soft);
+  color: var(--cms-primary);
+}
+
+.cms-nav__icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.cms-nav__group-label {
+  margin: 14px 10px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cms-text-faint);
+}
+
+.cms-nav__item--sub {
+  padding-left: 26px;
+  font-size: 13.5px;
+}
+
+.cms-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Topbar ===== */
+
+.cms-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 28px;
+  background: var(--cms-card);
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.cms-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto; /* เดิมพึ่ง justify-content:space-between ของ .cms-topbar กับ .cms-topbar__search
+    คู่กัน แต่ตอนนี้เอาช่องค้นหาออกแล้ว เหลือ child เดียวจะไปชิดซ้ายแทนถ้าไม่มี margin-left:auto นี้ */
+}
+
+.cms-avatar-menu {
+  position: relative;
+}
+
+.cms-avatar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+
+.cms-avatar-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 190px;
+  background: var(--cms-card);
+  border: 1px solid var(--cms-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 12%);
+  padding: 6px;
+  z-index: 20;
+  display: none;
+}
+
+.cms-avatar-menu__dropdown.is-open {
+  display: block;
+}
+
+.cms-avatar-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--cms-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.cms-avatar-menu__item:hover {
+  background: var(--cms-bg);
+}
+
+.cms-avatar__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--cms-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.cms-avatar__email {
+  font-size: 13px;
+  color: var(--cms-text-soft);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Content ===== */
+
+.cms-content {
+  flex: 1;
+  padding: 24px 28px 60px;
+}
+
+.cms-breadcrumb {
+  margin: 0 0 18px;
+  color: var(--cms-text-soft);
+  font-size: 14px;
+}
+
+.cms-breadcrumb strong {
+  color: var(--cms-text);
+}
+
+/* ===== Tabs (Banner Management: Hero / KV) ===== */
+
+.cms-tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background: var(--cms-card);
+  border: 1px solid var(--cms-border);
+}
+
+.cms-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--cms-text-soft);
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.cms-tab:hover {
+  background: var(--cms-bg);
+}
+
+.cms-tab.is-active {
+  background: var(--cms-primary);
+  color: #fff;
+}
+
+.cms-section-hint {
+  margin: 10px 0 18px;
+  color: var(--cms-text-faint);
+  font-size: 13px;
+}
+
+/* ===== Hero Banner page picker ===== */
+
+.cms-page-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--cms-primary-soft);
+}
+
+.cms-page-picker label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cms-text);
+}
+
+.cms-page-picker select {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  font-size: 13.5px;
+  min-width: 220px;
+}
+
+.cms-page-picker__hint {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--cms-text-soft);
+}
+
+.cms-page-picker__hint code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 70%);
+}
+
+/* ===== Text alignment picker (banner modal) ===== */
+
+.cms-align-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.cms-align-picker__btn {
+  flex: 1;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  color: var(--cms-text-soft);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cms-align-picker__btn:hover {
+  background: var(--cms-bg);
+}
+
+.cms-align-picker__btn.is-active {
+  border-color: var(--cms-primary);
+  background: var(--cms-primary-soft);
+  color: var(--cms-primary);
+}
+
+/* ฟิลด์ที่ถูกปิดใช้งานชั่วคราว (เช่น layout picker/รูปภาพ ตอนเปิด Custom HTML) — จางลงและคลิกไม่ได้ */
+.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ===== Banner grid + card ===== */
+
+.cms-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  padding: 20px;
+}
+
+.cms-banner-card {
+  border: 1px solid var(--cms-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.15s ease;
+}
+
+.cms-banner-card.is-dragging {
+  opacity: 0.4;
+}
+
+.cms-banner-card.drag-over-before {
+  box-shadow: -3px 0 0 0 var(--cms-primary) inset;
+}
+
+.cms-banner-card.drag-over-after {
+  box-shadow: 3px 0 0 0 var(--cms-primary) inset;
+}
+
+.cms-banner-card__thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 600;
+  background: var(--cms-bg) center / cover no-repeat;
+}
+
+.cms-banner-card__thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--cms-text-faint);
+  font-size: 12.5px;
+}
+
+.cms-banner-card__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgb(20 22 38 / 65%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cms-banner-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 16px;
+  flex: 1;
+}
+
+.cms-banner-card__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cms-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cms-banner-card__meta {
+  margin: 0;
+  font-size: 12px;
+  color: var(--cms-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cms-banner-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--cms-border);
+}
+
+.cms-banner-card__drag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  color: var(--cms-text-faint);
+  cursor: grab;
+}
+
+.cms-banner-card__drag:hover {
+  background: var(--cms-bg);
+}
+
+.cms-banner-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ===== Section list (Page Management) — โชว์ live preview จริงของแต่ละ section แทน thumbnail ===== */
+
+.cms-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.cms-section-card {
+  border: 1px solid var(--cms-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  transition: opacity 0.15s ease;
+}
+
+.cms-section-card.is-inactive {
+  opacity: 0.55;
+}
+
+.cms-section-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--cms-bg);
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.cms-section-card__title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--cms-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cms-section-card__collapse-btn {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  color: var(--cms-text-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cms-section-card__collapse-btn:hover {
+  background: var(--cms-primary-soft);
+  color: var(--cms-primary);
+}
+
+.cms-section-card__reorder {
+  /*display: flex;*/
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cms-section-card__reorder .cms-btn {
+  padding: 2px 8px;
+  line-height: 1;
+  font-size: 11px;
+}
+
+.cms-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cms-section-card__frame {
+  width: 100%;
+  border: 0;
+  display: block;
+  pointer-events: none; /* คลิกทะลุลงไม่ได้ ป้องกันคลิกลิงก์/ปุ่มข้างในระหว่างแก้ไขในหน้า CMS */
+}
+
+.cms-section-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--cms-border);
+  background: var(--cms-bg);
+}
+
+.cms-section-card__quick-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 14px;
+  border-top: 1px solid var(--cms-border);
+  background: #fff;
+}
+
+/* ===== Sticky bottom bar (ปุ่มบันทึกการตั้งค่าเพจ) ===== */
+
+.cms-sticky-bottombar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  background: #fff;
+  border-top: 1px solid var(--cms-border);
+  box-shadow: 0 -4px 14px rgb(0 0 0 / 6%);
+}
+
+/* wide modal (Banner form has TH/EN side-by-side fields) */
+
+.cms-modal--wide {
+  max-width: 680px;
+}
+
+.cms-modal--preview {
+  max-width: 900px;
+  width: 100%;
+}
+
+.cms-preview-lang-toggle {
+  display: inline-flex;
+  border: 1px solid var(--cms-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cms-preview-lang-toggle button {
+  padding: 6px 14px;
+  border: none;
+  background: #fff;
+  color: var(--cms-text-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cms-preview-lang-toggle button.is-active {
+  background: var(--cms-primary);
+  color: #fff;
+}
+
+.cms-preview-stage {
+  background: #0e0f1a;
+  padding: 24px;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cms-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.cms-stat-card {
+  padding: 18px 20px;
+  border-radius: var(--cms-radius);
+  background: var(--cms-card);
+  border: 1px solid var(--cms-border);
+  box-shadow: var(--cms-shadow);
+}
+
+.cms-stat-card__label {
+  margin: 0 0 10px;
+  color: var(--cms-text-soft);
+  font-size: 13px;
+}
+
+.cms-stat-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.cms-panel {
+  background: var(--cms-card);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  box-shadow: var(--cms-shadow);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.cms-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.cms-toolbar__label {
+  font-weight: 700;
+  color: var(--cms-text);
+}
+
+.cms-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cms-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 260px;
+  padding: 0 14px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--cms-border);
+  background: var(--cms-bg);
+  color: var(--cms-text-faint);
+}
+
+.cms-search input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--cms-text);
+}
+
+.cms-filter-select {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  color: var(--cms-text);
+  font-size: 13px;
+}
+
+.cms-product-thumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cms-product-thumb__img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--cms-bg);
+  flex-shrink: 0;
+}
+
+.cms-product-thumb__img-empty {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--cms-bg);
+  flex-shrink: 0;
+}
+
+/* ===== Product images gallery (max 5, cover selection) ===== */
+
+.cms-product-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* wrap รูป + ช่องลิงก์แยกต่อรูปไว้ด้วยกัน (คนละแถวในกริดเดียวกับปุ่ม "+" ซึ่งไม่มี wrap) */
+.cms-product-image-slot-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 96px;
+  flex-shrink: 0;
+}
+
+.cms-product-image-slot__link {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  color: var(--cms-text);
+  font-size: 11px;
+}
+
+.cms-product-image-slot {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  background: var(--cms-bg);
+  flex-shrink: 0;
+}
+
+.cms-product-image-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cms-product-image-slot__cover-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--cms-primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cms-product-image-slot__actions {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: rgb(0 0 0 / 55%);
+}
+
+.cms-product-image-slot__btn {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 90%);
+  color: var(--cms-text);
+  font-size: 11px;
+  padding: 3px 0;
+  cursor: pointer;
+}
+
+.cms-product-image-slot__btn:hover {
+  background: #fff;
+}
+
+.cms-product-image-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 96px;
+  height: 96px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--cms-border);
+  background: none;
+  color: var(--cms-text-faint);
+  font-size: 10.5px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.cms-product-image-add:hover,
+.cms-product-image-add.is-dragover {
+  border-color: var(--cms-primary);
+  background: var(--cms-primary-soft);
+  color: var(--cms-primary);
+}
+
+/* ===== Rich text editor (Quill) ===== */
+
+.cms-rich-editor {
+  background: #fff;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+}
+
+.cms-rich-editor .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid var(--cms-border);
+  font-family: var(--cms-font);
+}
+
+.cms-rich-editor .ql-container {
+  border: none;
+  font-family: var(--cms-font);
+  font-size: 13.5px;
+  min-height: 110px;
+}
+
+.cms-rich-editor .ql-editor {
+  height: 250px;
+}
+
+/* คลิกรูปใน rich text editor แล้วโชว์ toolbar ลอย (ซ้าย/กลาง/ขวา/เต็มความกว้าง/รีเซ็ต) + จุดลากปรับขนาด
+   (bindQuillImageResize() ใน cms/upload.js) — append เข้า document.body ตรงๆ (ไม่ใช่ลูกของ modal) เพื่อเลี่ยง
+   ปัญหา overflow:hidden/transform ของ modal ที่ editor อาจอยู่ข้างใน ใช้ position:fixed คู่กับพิกัดจาก
+   getBoundingClientRect() ตรงๆ ไม่ต้องบวก scrollX/Y */
+.cms-img-toolbar {
+  position: fixed;
+  z-index: 300;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  background: #1a1d29;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 25%);
+}
+
+.cms-img-toolbar[hidden] {
+  display: none;
+}
+
+.cms-img-toolbar button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.cms-img-toolbar button:hover {
+  background: rgb(255 255 255 / 15%);
+}
+
+.cms-img-resize-handle {
+  position: fixed;
+  z-index: 300;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cms-primary, #1b5ef9);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+  cursor: nwse-resize;
+}
+
+.cms-img-resize-handle[hidden] {
+  display: none;
+}
+
+.cms-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--cms-border);
+  background: var(--cms-card);
+  color: var(--cms-text);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cms-btn:hover {
+  background: var(--cms-bg);
+}
+
+.cms-btn--primary {
+  border-color: var(--cms-primary);
+  background: var(--cms-primary);
+  color: #fff;
+}
+
+.cms-btn--primary:hover {
+  background: var(--cms-primary-hover);
+  border-color: var(--cms-primary-hover);
+}
+
+.cms-btn--danger {
+  border-color: var(--cms-red);
+  color: var(--cms-red);
+  background: #fff;
+}
+
+.cms-btn--danger:hover {
+  background: #fdeceb;
+}
+
+.cms-btn--ghost {
+  border-color: transparent;
+  background: none;
+}
+
+.cms-btn--ghost:hover {
+  background: var(--cms-bg);
+}
+
+/* ===== Menu tree table ===== */
+
+.cms-table-wrap {
+  overflow-x: auto;
+}
+
+.cms-menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 920px;
+}
+
+.cms-menu-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cms-text-faint);
+  border-bottom: 1px solid var(--cms-border);
+  white-space: nowrap;
+}
+
+.cms-menu-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--cms-border);
+  vertical-align: middle;
+}
+
+.cms-menu-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cms-menu-row__name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cms-menu-row__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--cms-text-faint);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.cms-menu-row__toggle.is-collapsed {
+  transform: rotate(-90deg);
+}
+
+.cms-menu-row__toggle.is-spacer {
+  visibility: hidden;
+}
+
+.cms-menu-row__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--cms-primary-soft);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.cms-menu-row__text strong {
+  display: block;
+  font-size: 13.5px;
+  color: var(--cms-text);
+}
+
+.cms-menu-row__text span,
+.cms-menu-row__text a {
+  display: block;
+  font-size: 12px;
+  color: var(--cms-text-faint);
+}
+
+.cms-menu-row__text a {
+  text-decoration: none;
+}
+
+.cms-menu-row__text a:hover {
+  color: var(--cms-primary);
+  text-decoration: underline;
+}
+
+/* เมนูหลัก (depth 0) พื้นหลังต่างจากเมนูย่อยให้เห็นชัดว่าเป็นระดับบนสุด */
+.cms-menu-row[data-depth="0"] td {
+  background: var(--cms-primary-soft);
+}
+
+.cms-menu-row[data-depth="1"] .cms-menu-row__name {
+  padding-left: 28px;
+}
+
+.cms-menu-row[data-depth="2"] .cms-menu-row__name {
+  padding-left: 56px;
+}
+
+.cms-menu-row[data-depth="3"] .cms-menu-row__name {
+  padding-left: 84px;
+}
+
+.cms-menu-row--group {
+  background: var(--cms-bg);
+}
+
+.cms-menu-row--group td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.cms-menu-row--group strong {
+  color: var(--cms-text-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cms-url-pill {
+  display: inline-block;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--cms-bg);
+  color: var(--cms-text-soft);
+  font-size: 12.5px;
+}
+
+.cms-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  color: var(--cms-text-faint);
+  cursor: grab;
+}
+
+.cms-drag-handle:hover {
+  background: var(--cms-bg);
+  color: var(--cms-text-soft);
+}
+
+.cms-menu-row.is-dragging {
+  opacity: 0.4;
+}
+
+.cms-menu-row.drag-over-top td {
+  box-shadow: inset 0 2px 0 0 var(--cms-primary);
+}
+
+.cms-menu-row.drag-over-bottom td {
+  box-shadow: inset 0 -2px 0 0 var(--cms-primary);
+}
+
+.cms-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cms-primary);
+  color: var(--cms-primary-soft);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.cms-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  background: #d8dae4;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cms-toggle.is-on {
+  background: var(--cms-primary);
+}
+
+.cms-toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+}
+
+.cms-toggle.is-on .cms-toggle__knob {
+  transform: translateX(18px);
+}
+
+.cms-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cms-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--cms-text-faint);
+}
+
+/* ===== Modal ===== */
+
+.cms-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+  background: rgb(20 22 38 / 45%);
+  overflow-y: auto;
+}
+
+.cms-modal-overlay[hidden] {
+  display: none;
+}
+
+.cms-modal {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgb(20 22 38 / 25%);
+}
+
+.cms-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.cms-modal__header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.cms-modal__close {
+  border: none;
+  background: none;
+  color: var(--cms-text-faint);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.cms-modal__body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.cms-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* [hidden] ของ browser เจอปัญหา specificity เท่ากับ .cms-field (ทั้งคู่ 0,1,0) แต่ .cms-field มาทีหลังใน
+   cascade เลยชนะ ทำให้ hidden attribute ไม่มีผลกับ .cms-field element ไหนเลย (บั๊กแบบเดียวกับ
+   .cms-icon-btn[hidden]/.line-order-modal__actions[hidden] ที่เจอมาก่อน) — พบว่าทำให้ทั้ง 3 กลุ่มฟิลด์
+   พื้นหลัง (รูปภาพ/สีพื้น/gradient) ใน cms/page-editor.html แสดงพร้อมกันหมดโดยไม่สนใจว่าเลือกรูปแบบไหนไว้ */
+.cms-field[hidden] {
+  display: none;
+}
+
+.cms-field label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--cms-text-soft);
+}
+
+.cms-field input[type="text"],
+.cms-field input[type="url"],
+.cms-field input[type="password"],
+.cms-field input[type="email"],
+.cms-field input[type="number"],
+.cms-field select {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 9px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  font-size: 13.5px;
+  color: var(--cms-text);
+  outline: none;
+}
+
+.cms-field textarea {
+  padding: 10px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--cms-border);
+  background: #fff;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: var(--cms-text);
+  outline: none;
+  resize: vertical;
+}
+
+.cms-field input:focus,
+.cms-field select:focus,
+.cms-field textarea:focus {
+  border-color: var(--cms-primary);
+}
+
+.cms-code-editor {
+  font-family: "SF Mono", "Fira Code", Consolas, Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre;
+  background: #1e1f2b;
+  color: #d8dae8;
+  border-color: #2f3142;
+}
+
+.cms-code-editor:focus {
+  border-color: var(--cms-primary);
+}
+
+.cms-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.cms-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Color field (native color picker + hex/rgb text input) ===== */
+
+.cms-color-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cms-color-field input[type="color"] {
+  width: 44px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 2px;
+  border: 1px solid var(--cms-border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.cms-color-field input[type="text"] {
+  flex: 1;
+}
+
+/* ===== Image field (URL + upload + preview) ===== */
+
+.cms-image-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cms-image-field__preview {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  border: 1px solid var(--cms-border);
+  object-fit: cover;
+  background: var(--cms-bg);
+}
+
+.cms-image-field__controls {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cms-image-field__upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cms-image-field__upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.cms-image-field__status {
+  font-size: 12px;
+  color: var(--cms-text-faint);
+}
+
+/* ===== Dropzone (คลิก/ลากไฟล์มาวาง) ใช้แทนปุ่ม "📤 อัปโหลด" เดิมในทุกจุดที่มี image upload ===== */
+
+.cms-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 22px 16px;
+  border: 1.5px dashed var(--cms-border);
+  border-radius: 12px;
+  background: var(--cms-bg);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.cms-dropzone:hover,
+.cms-dropzone.is-dragover {
+  border-color: var(--cms-primary);
+  background: var(--cms-primary-soft);
+}
+
+.cms-dropzone__icon {
+  color: var(--cms-text-soft);
+}
+
+.cms-dropzone:hover .cms-dropzone__icon,
+.cms-dropzone.is-dragover .cms-dropzone__icon {
+  color: var(--cms-primary);
+}
+
+.cms-dropzone__title {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--cms-text);
+}
+
+.cms-dropzone__title strong {
+  font-weight: 700;
+}
+
+.cms-dropzone__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--cms-text-faint);
+}
+
+.cms-char-count {
+  display: block;
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--cms-text-faint);
+  text-align: right;
+}
+
+.cms-char-count.is-limit {
+  color: var(--cms-red);
+  font-weight: 700;
+}
+
+.cms-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid var(--cms-border);
+}
+
+.cms-error-text {
+  color: var(--cms-red);
+  font-size: 12.5px;
+  min-height: 16px;
+}
+
+/* ===== Password field (with show/hide toggle) ===== */
+
+.cms-password-field {
+  position: relative;
+}
+
+.cms-password-field input {
+  width: 100%;
+  padding-right: 42px;
+}
+
+.cms-password-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--cms-text-faint);
+  cursor: pointer;
+}
+
+.cms-password-toggle:hover {
+  color: var(--cms-text-soft);
+}
+
+.cms-password-toggle__icon-show[hidden],
+.cms-password-toggle__icon-hide[hidden] {
+  display: none;
+}
+
+/* ===== Login page ===== */
+
+.cms-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #f5f6fa 0%, #e9e8fb 100%);
+  padding: 20px;
+}
+
+.cms-login__card {
+  width: 100%;
+  max-width: 380px;
+  padding: 36px 32px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--cms-shadow);
+}
+
+.cms-login__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.cms-login__logo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 44px;
+}
+
+.cms-login__title {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.cms-login__subtitle {
+  margin: 0 0 22px;
+  color: var(--cms-text-soft);
+  font-size: 13.5px;
+}
+
+.cms-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== Toast ===== */
+
+.cms-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cms-toast__item {
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: var(--cms-text);
+  color: #fff;
+  font-size: 13.5px;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 20%);
+  animation: cms-toast-in 0.2s ease;
+}
+
+.cms-toast__item.is-error {
+  background: var(--cms-red);
+}
+
+.cms-toast__item.is-success {
+  background: var(--cms-green);
+}
+
+@keyframes cms-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .cms-sidebar {
+    display: none;
+  }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CPSS — ไม่พบหน้าที่คุณต้องการ (404)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header site-header--cpss">
+  <div class="site-topbar">
+    <div class="site-topbar__inner">
+      <span class="site-topbar__company" data-en="CP Sales &amp; Service Co., Ltd.">บริษัท ซีพี เซลล์ แอนด์ เซอร์วิส จำกัด</span>
+      <div class="site-topbar__contact">
+        <a href="https://line.me/R/ti/p/@033tlaat" target="_blank" rel="noopener" class="site-topbar__line">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 5.94 2 10.8c0 4.36 3.58 8.02 8.42 8.71.33.07.78.22.89.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1 .87.55 1.08-.46 5.8-3.42 7.92-5.85C21.53 14.1 22 12.5 22 10.8 22 5.94 17.52 2 12 2Z"/></svg>
+          LINE @033tlaat
+        </a>
+        <a href="tel:0944560660" class="site-topbar__hotline">
+          <span data-en="Hotline">สายด่วน</span><strong>094-456-0660</strong>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-header__container">
+    <a href="index.html" class="site-header__logo">
+      <img src="raw/assets/cpss-logo-transparent.png" alt="CPSS logo" />
+    </a>
+
+    <nav class="site-header__nav" id="siteHeaderNav" aria-label="เมนูหลัก" data-en-aria-label="Main menu">
+      <ul>
+        <li><a href="#" data-th="เกี่ยวกับเรา">About Us</a></li>
+
+        <li class="has-dropdown">
+          <a href="#" data-th="ธุรกิจของเรา">Our Business</a>
+          <div class="nav-dropdown">
+            <ul class="nav-dropdown__list">
+              <li><a href="#" data-en="Coffee Machine Service">บริการเครื่องชงกาแฟ</a></li>
+              <li><a href="#" data-en="Cooling &amp; Refrigeration">ระบบทำความเย็น</a></li>
+              <li><a href="#" data-en="Vending Machines">ตู้ Vending</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="has-dropdown">
+          <a href="#" data-th="บริการทั้งหมด">All Services</a>
+          <div class="nav-dropdown">
+            <ul class="nav-dropdown__list">
+              <li><a href="#" data-en="Repair &amp; PM">งานซ่อมและ PM</a></li>
+              <li><a href="#" data-en="Cooling Systems">ระบบทำความเย็น</a></li>
+              <li><a href="#" data-en="Coffee Equipment">อุปกรณ์กาแฟ</a></li>
+              <li><a href="#" data-en="Spare Parts">จำหน่ายอะไหล่</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li><a href="#" data-th="ศูนย์บริการช่าง">Service Center</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-header__right">
+      <div class="site-header__lang-switcher">
+        <button type="button" class="site-header__lang-btn" id="langSwitcherBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langSwitcherMenu" aria-label="เปลี่ยนภาษา" data-en-aria-label="Switch language">
+          <span class="site-header__lang-code" aria-hidden="true">TH</span>
+          <svg class="site-header__lang-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="site-header__lang-menu" id="langSwitcherMenu" role="menu" hidden>
+          <li role="none">
+            <button type="button" role="menuitem" class="site-header__lang-option" data-lang="th">
+              <span class="site-header__lang-option-flag" aria-hidden="true">🇹🇭</span>
+              <span>ไทย</span>
+            </button>
+          </li>
+          <li role="none">
+            <button type="button" role="menuitem" class="site-header__lang-option" data-lang="en">
+              <span class="site-header__lang-option-flag" aria-hidden="true">🇬🇧</span>
+              <span>English</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <a href="#" class="site-header__cta" data-th="แจ้งงานบริการ">Request Service</a>
+
+      <button type="button" class="site-header__hamburger" id="headerHamburger" aria-label="เปิดเมนู" data-en-aria-label="Open menu" aria-expanded="false" aria-controls="siteHeaderNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ========================================
+     Section: 404 Not Found — เพจ static ล้วน ไม่ผ่าน Page Management (ไม่ใช่ "เนื้อหา" ที่ควรแก้ไขผ่าน CMS)
+     redirect มาที่นี่โดย page-render.js เมื่อเข้าถึงเพจ/เมนูที่ถูกลบ/ปิดใช้งาน หรือโดย _redirects (Netlify)
+     เมื่อ path ไม่มีไฟล์จริงและไม่ตรงกับเพจ standalone ไหนเลย
+========================================= -->
+<section class="page-section" style="min-height: 56vh; display: flex; align-items: center;">
+  <div class="section-container" style="text-align: center; width: 100%;">
+    <p style="font-size: clamp(64px, 12vw, 140px); font-weight: 800; color: var(--primary-color); margin: 0; line-height: 1; font-family: var(--font-family);">404</p>
+    <h1 class="page-section__title" style="margin: 16px 0 8px;" data-en="Page not found">ไม่พบหน้าที่คุณต้องการ</h1>
+    <p style="color: var(--font-body, #666); margin: 0 0 32px; max-width: 480px; margin-left: auto; margin-right: auto;" data-en="This page may have been removed, renamed, or is temporarily unavailable.">หน้านี้อาจถูกลบ เปลี่ยนชื่อ หรือถูกปิดใช้งานชั่วคราว</p>
+    <a href="index.html" class="page-section__btn--primary" data-en="Back to Homepage">กลับหน้าแรก</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="section-container site-footer__top">
+    <div class="site-footer__brand">
+      <img src="raw/assets/cpss-logo-transparent.png" alt="CPSS logo" class="site-footer__logo" />
+      <p class="site-footer__brand-name" data-en="CP Sales &amp; Service Co., Ltd.">CP Sales &amp; Service Co., Ltd.</p>
+      <p class="site-footer__tagline" data-en="Technical Service &amp; Maintenance">Technical Service &amp; Maintenance</p>
+      <a href="https://line.me/R/ti/p/@033tlaat" target="_blank" rel="noopener" class="site-footer__line-handle">LINE @033tlaat</a>
+    </div>
+
+    <div class="site-footer__column">
+      <h3 class="site-footer__heading" data-en="Services">บริการ</h3>
+      <a href="#" data-en="Repair &amp; PM">งานซ่อมและ PM</a>
+      <a href="#" data-en="Cooling Systems">ระบบทำความเย็น</a>
+      <a href="#" data-en="Coffee Equipment">อุปกรณ์กาแฟ</a>
+      <a href="#" data-en="Spare Parts">จำหน่ายอะไหล่</a>
+    </div>
+
+    <div class="site-footer__column">
+      <h3 class="site-footer__heading" data-en="Company">บริษัท</h3>
+      <a href="#" data-en="About Us">เกี่ยวกับเรา</a>
+      <a href="#" data-en="Our Business">ธุรกิจของเรา</a>
+      <a href="#" data-en="Service Center">ศูนย์บริการช่าง</a>
+    </div>
+
+    <div class="site-footer__column">
+      <h3 class="site-footer__heading" data-en="Contact">ติดต่อ</h3>
+      <a href="tel:0200033113">02-003-3113</a>
+      <a href="tel:0944560660">094-456-0660</a>
+      <a href="mailto:cpsscenter@cpbf.co.th">cpsscenter@cpbf.co.th</a>
+    </div>
+
+    <div class="site-footer__column">
+      <h3 class="site-footer__heading" data-en="Head Office">สำนักงานใหญ่</h3>
+      <iframe class="site-footer__map" src="https://www.google.com/maps?q=185%20%E0%B8%8B%E0%B8%AD%E0%B8%A2%E0%B8%A7%E0%B8%B4%E0%B8%A0%E0%B8%B2%E0%B8%A7%E0%B8%94%E0%B8%B5%E0%B8%A3%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B4%E0%B8%95%2062%20%E0%B9%81%E0%B8%82%E0%B8%A7%E0%B8%87%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99%20%E0%B9%80%E0%B8%82%E0%B8%95%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%AA%E0%B8%B5%E0%B9%88%20%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%AF&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="แผนที่สำนักงานใหญ่ CPSS" data-en-title="CPSS Head Office map"></iframe>
+      <p class="site-footer__address">
+        185 ซอยวิภาวดีรังสิต 62 แขวงตลาดบางเขน เขตหลักสี่ กรุงเทพฯ —
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=185%20%E0%B8%8B%E0%B8%AD%E0%B8%A2%E0%B8%A7%E0%B8%B4%E0%B8%A0%E0%B8%B2%E0%B8%A7%E0%B8%94%E0%B8%B5%E0%B8%A3%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B4%E0%B8%95%2062%20%E0%B9%81%E0%B8%82%E0%B8%A7%E0%B8%87%E0%B8%95%E0%B8%A5%E0%B8%B2%E0%B8%94%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99%20%E0%B9%80%E0%B8%82%E0%B8%95%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81%E0%B8%AA%E0%B8%B5%E0%B9%88%20%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%AF" target="_blank" rel="noopener" data-en="Open Google Maps ↗">เปิด Google Maps ↗</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="section-container site-footer__bottom">
+    <p data-en="&#169; 2026 CP Sales &amp; Service Co., Ltd.">© 2026 CP Sales &amp; Service Co., Ltd.</p>
+    <p data-en="Nationwide technician &amp; spare parts service">บริการช่างและอะไหล่ทั่วประเทศ</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="cms/config.js"></script>
+<script src="cms/supabase-client.js"></script>
+<script src="nav-render.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
