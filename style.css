@@ -735,14 +735,27 @@ section{ position:relative; margin:0; }
   color: var(--footer-text);
 }
 
+/* rev.CPSS — เปลี่ยนจาก grid คอลัมน์ตายตัว (5 คอลัมน์) เป็น flexbox ที่รองรับจำนวนคอลัมน์ไม่แน่นอน เพราะ
+   คอลัมน์เมนู (.site-footer__column ที่ id ขึ้นต้น footer-menu-) ตอนนี้สร้างจาก footer-render.js ตามจำนวน
+   เมนูหลักจริงใน CMS (เพิ่ม/ลบเมนูหลักเปลี่ยนจำนวนคอลัมน์ได้ตลอด ไม่ใช่ค่าคงที่ 2 คอลัมน์เหมือนเดิม) —
+   flex-wrap ทำให้ล้นบรรทัดแล้วขึ้นบรรทัดใหม่เองตามความกว้างจอ ไม่ต้องกำหนด breakpoint ตายตัวแยกทีละจำนวน */
 .site-footer__top {
-  display: grid;
-  grid-template-columns: 1.4fr repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: 32px;
   padding: 20px 30px;
 }
 
+/* #footerMenuColumns (index.html/promo.html/404.html) เป็นแค่ wrapper div เปล่าไว้ให้ footer-render.js
+   หาตำแหน่ง insert — ต้องเป็น display:contents ไม่งั้นคอลัมน์เมนูที่สร้างข้างในจะกลายเป็น flex item
+   เดียวรวมกัน (ซ้อนกันในแนวตั้ง) แทนที่จะเป็นคอลัมน์แยกที่ชิดซ้ายเรียงต่อจาก brand ตามจำนวนเมนูจริง */
+#footerMenuColumns {
+  display: contents;
+}
+
 .site-footer__brand {
+  flex: 1.4 1 240px;
   padding-right: 16px;
 }
 
@@ -798,6 +811,7 @@ section{ position:relative; margin:0; }
 }
 
 .site-footer__column {
+  flex: 1 1 150px;
   display: flex;
   flex-direction: column;
 }
@@ -900,12 +914,8 @@ section{ position:relative; margin:0; }
 }
 
 @media (max-width: 1100px) {
-  .site-footer__top {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .site-footer__brand {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     padding-right: 0;
     margin-bottom: 12px;
   }
@@ -928,13 +938,12 @@ section{ position:relative; margin:0; }
   }
 
   .site-footer__top {
-    grid-template-columns: repeat(2, 1fr);
     gap: 28px;
     padding: 40px 20px;
   }
 
-  .site-footer__brand {
-    grid-column: 1 / -1;
+  .site-footer__column {
+    flex-basis: 130px;
   }
 
   .site-footer__bottom {
@@ -945,8 +954,8 @@ section{ position:relative; margin:0; }
 }
 
 @media (max-width: 480px) {
-  .site-footer__top {
-    grid-template-columns: 1fr;
+  .site-footer__column {
+    flex-basis: 100%;
   }
 }
 
@@ -6039,6 +6048,213 @@ button:focus-visible {
   .ch-form-grid .ch-full,
   .ch-region-list article:first-child {
     grid-column: auto;
+  }
+}
+
+/* ==================================
+   CPSS Spare Parts Library (custom-html ผ่าน CMS > จัดการเพจ > Spare part)
+   อ้างอิงดีไซน์จาก https://cpss-service-th.pawinee-patch.chatgpt.site/spare-parts
+   ใช้คลาส prefix "ch-" ต่อจากชุดหน้าแรก (.ch-shell/.ch-eyebrow/.ch-button/.ch-section ใช้ร่วมกันได้เลย)
+================================== */
+
+.ch-spare-hero {
+  padding: 100px 0;
+  background: linear-gradient(90deg, rgb(3 16 31 / 96%), rgb(3 16 31 / 76%)), url("raw/assets/assets/coffee-grinders.png") right / cover no-repeat;
+  color: #ffffff;
+}
+
+.ch-spare-hero h1 {
+  margin: 16px 0 24px;
+  letter-spacing: -0.045em;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.18;
+  color: #ffffff;
+}
+
+.ch-spare-hero h1 span {
+  color: #62c8f1;
+}
+
+.ch-spare-hero p:not(.ch-eyebrow):not(.ch-eyebrow--light) {
+  max-width: 660px;
+  color: #becfdd;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.ch-spare-hero .ch-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 30px 0 0;
+}
+
+.ch-spare-library {
+  background: #f1f6f9;
+}
+
+.ch-document-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: start;
+  gap: 28px;
+}
+
+.ch-document-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ch-document-card {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  overflow: hidden;
+  min-height: 128px;
+  padding: 0;
+  border: 1px solid #d9e3eb;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.ch-document-card:hover,
+.ch-document-card.is-selected {
+  border-color: #09a1dc;
+  box-shadow: 0 12px 28px rgb(8 86 133 / 12%);
+}
+
+.ch-document-card.is-selected {
+  outline: 2px solid rgb(9 161 220 / 25%);
+}
+
+.ch-document-card img {
+  width: 92px;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.ch-document-card > span {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 13px;
+}
+
+.ch-document-card small {
+  color: #09a1dc;
+  font-size: 0.61rem;
+  font-weight: 800;
+}
+
+.ch-document-card strong {
+  margin: 3px 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #11243a;
+}
+
+.ch-document-card em {
+  margin-top: auto;
+  color: #0878bc;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ch-pdf-preview {
+  position: sticky;
+  top: 96px;
+  background: #071c33;
+  box-shadow: 0 24px 55px rgb(4 28 50 / 18%);
+}
+
+.ch-pdf-preview > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  padding: 12px 15px;
+  color: #ffffff;
+}
+
+.ch-pdf-preview span small,
+.ch-pdf-preview span strong {
+  display: block;
+}
+
+.ch-pdf-preview small {
+  color: #62c8f1;
+  font-size: 0.63rem;
+}
+
+.ch-pdf-preview strong {
+  color: #ffffff;
+}
+
+.ch-pdf-preview a {
+  color: #73d1f2;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.ch-pdf-preview iframe {
+  display: block;
+  width: 100%;
+  height: 680px;
+  border: 0;
+  background: #ffffff;
+}
+
+.ch-parts-cta {
+  padding: 58px 0;
+  background: #071c33;
+  color: #ffffff;
+}
+
+.ch-parts-cta .ch-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.ch-parts-cta h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+@media (max-width: 1040px) {
+  .ch-document-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-pdf-preview {
+    position: static;
+  }
+
+  .ch-pdf-preview iframe {
+    height: 520px;
+  }
+}
+
+@media (max-width: 680px) {
+  .ch-spare-hero {
+    padding: 64px 0;
+  }
+
+  .ch-document-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ch-parts-cta .ch-shell {
+    display: block;
+  }
+
+  .ch-parts-cta .ch-button {
+    margin-top: 18px;
   }
 }
 

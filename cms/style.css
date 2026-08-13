@@ -1656,7 +1656,7 @@ button {
 
 .cms-toast {
   position: fixed;
-  bottom: 24px;
+  top: 24px;
   right: 24px;
   z-index: 200;
   display: flex;
@@ -1685,7 +1685,7 @@ button {
 @keyframes cms-toast-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;

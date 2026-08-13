@@ -277,20 +277,10 @@
       <a href="https://line.me/R/ti/p/@033tlaat" target="_blank" rel="noopener" class="site-footer__line-handle">LINE @033tlaat</a>
     </div>
 
-    <div class="site-footer__column">
-      <h3 class="site-footer__heading" data-en="Services">บริการ</h3>
-      <a href="#" data-en="Repair &amp; PM">งานซ่อมและ PM</a>
-      <a href="#" data-en="Cooling Systems">ระบบทำความเย็น</a>
-      <a href="#" data-en="Coffee Equipment">อุปกรณ์กาแฟ</a>
-      <a href="#" data-en="Spare Parts">จำหน่ายอะไหล่</a>
-    </div>
-
-    <div class="site-footer__column">
-      <h3 class="site-footer__heading" data-en="Company">บริษัท</h3>
-      <a href="#" data-en="About Us">เกี่ยวกับเรา</a>
-      <a href="#" data-en="Our Business">ธุรกิจของเรา</a>
-      <a href="#" data-en="Service Center">ศูนย์บริการช่าง</a>
-    </div>
+    <!-- คอลัมน์เมนู: สร้างอัตโนมัติจาก menu_items (footer-render.js) — เมนูหลักที่มีเมนูย่อยได้คอลัมน์ของ
+         ตัวเอง (ชื่อเมนูหลักเป็นหัวคอลัมน์ เมนูย่อยเป็นลิงก์) เมนูหลักที่ไม่มีเมนูย่อยถูกรวมอยู่ในคอลัมน์
+         "บริษัท" คอลัมน์เดียว — เพิ่ม/ลบ/แก้เมนูใน CMS แล้ว footer จะเปลี่ยนตามทันทีโดยไม่ต้องแก้ไฟล์นี้ -->
+    <div id="footerMenuColumns"></div>
 
     <div class="site-footer__column">
       <h3 class="site-footer__heading" data-en="Contact">ติดต่อ</h3>
@@ -407,6 +397,7 @@
 <script src="cms/config.js"></script>
 <script src="cms/supabase-client.js"></script>
 <script src="nav-render.js"></script>
+<script src="footer-render.js"></script>
 <script src="hero-slider.js"></script>
 <script src="banner-render.js"></script>
 <script src="page-render.js"></script>

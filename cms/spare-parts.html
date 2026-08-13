@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Page Management — CP B&amp;F CMS</title>
+<title>คลังอะไหล่ — CPSS CMS</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -43,14 +43,14 @@
         <span class="cms-nav__label">หมวดหมู่</span>
       </a>
       <div class="cms-nav__group-label">เพจ</div>
-      <a href="pages.html" class="cms-nav__item cms-nav__item--sub is-active">
+      <a href="pages.html" class="cms-nav__item cms-nav__item--sub">
         <span class="cms-nav__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </span>
         <span class="cms-nav__label">รายการเพจ</span>
       </a>
       <div class="cms-nav__group-label">คลังอะไหล่</div>
-      <a href="spare-parts.html" class="cms-nav__item cms-nav__item--sub">
+      <a href="spare-parts.html" class="cms-nav__item cms-nav__item--sub is-active">
         <span class="cms-nav__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </span>
@@ -87,38 +87,29 @@
     </header>
 
     <main class="cms-content">
-      <p class="cms-breadcrumb">CMS / <strong>Page Management</strong></p>
+      <p class="cms-breadcrumb">CMS / <strong>คลังอะไหล่ (Spare Parts)</strong></p>
 
       <div class="cms-stats">
         <div class="cms-stat-card">
-          <p class="cms-stat-card__label">Total Pages</p>
-          <div class="cms-stat-card__value"><span id="statTotalPages">–</span></div>
+          <p class="cms-stat-card__label">เอกสารทั้งหมด</p>
+          <div class="cms-stat-card__value"><span id="statTotalDocs">–</span></div>
         </div>
         <div class="cms-stat-card">
-          <p class="cms-stat-card__label">ผูกกับเมนู</p>
-          <div class="cms-stat-card__value"><span id="statMenuPages">–</span></div>
-        </div>
-        <div class="cms-stat-card">
-          <p class="cms-stat-card__label">Standalone</p>
-          <div class="cms-stat-card__value"><span id="statStandalonePages">–</span></div>
+          <p class="cms-stat-card__label">เปิดใช้งาน</p>
+          <div class="cms-stat-card__value"><span id="statActiveDocs">–</span></div>
         </div>
       </div>
 
       <div class="cms-panel">
         <div class="cms-toolbar">
-          <span class="cms-toolbar__label">รายการเพจ</span>
+          <span class="cms-toolbar__label">รายการเอกสารอะไหล่ (แสดงที่หน้า spare-part.html)</span>
           <div class="cms-toolbar__right">
             <div class="cms-search">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <input type="search" id="pageSearchInput" placeholder="ค้นหาเพจ..." />
+              <input type="search" id="sparePartSearchInput" placeholder="ค้นหายี่ห้อ/ชื่อรุ่น..." />
             </div>
-            <select class="cms-filter-select" id="pageTypeFilter">
-              <option value="">ทุกประเภท</option>
-              <option value="menu">ผูกกับเมนู</option>
-              <option value="standalone">Standalone</option>
-            </select>
-            <button type="button" class="cms-btn cms-btn--primary" id="addPageBtn">
-              <span aria-hidden="true">+</span> เพิ่มเพจ Standalone
+            <button type="button" class="cms-btn cms-btn--primary" id="addSparePartBtn">
+              <span aria-hidden="true">+</span> เพิ่มเอกสาร
             </button>
           </div>
         </div>
@@ -127,57 +118,82 @@
           <table class="cms-menu-table">
             <thead>
               <tr>
-                <th>เพจ</th>
-                <th>ประเภท</th>
-                <th>เมนูที่ผูก</th>
-                <th>Section</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>ปก</th>
+                <th>ชื่อเอกสาร / ยี่ห้อ</th>
+                <th>ไฟล์ PDF</th>
+                <th>ลำดับ</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
               </tr>
             </thead>
-            <tbody id="pageTableBody">
-              <!-- rendered by pages.js -->
+            <tbody id="sparePartTableBody">
+              <!-- rendered by spare-parts.js -->
             </tbody>
           </table>
         </div>
-        <div class="cms-empty" id="pageEmptyState" hidden>ไม่พบเพจที่ตรงกับเงื่อนไข</div>
+        <div class="cms-empty" id="sparePartEmptyState" hidden>ยังไม่มีเอกสารอะไหล่ — กด "+ เพิ่มเอกสาร" เพื่อเริ่มสร้างรายการแรก</div>
       </div>
     </main>
   </div>
 </div>
 
-<!-- Add Standalone Page Modal -->
-<div class="cms-modal-overlay" id="pageModalOverlay" hidden>
+<!-- Add / Edit Modal -->
+<div class="cms-modal-overlay" id="sparePartModalOverlay" hidden>
   <div class="cms-modal">
     <div class="cms-modal__header">
-      <h2>เพิ่มเพจ Standalone</h2>
-      <button type="button" class="cms-modal__close" id="pageModalClose" aria-label="ปิด">✕</button>
+      <h2 id="sparePartModalTitle">เพิ่มเอกสารใหม่</h2>
+      <button type="button" class="cms-modal__close" id="sparePartModalClose" aria-label="ปิด">✕</button>
     </div>
-    <form id="pageForm">
+    <form id="sparePartForm">
       <div class="cms-modal__body">
-        <p class="cms-section-hint">เพจ Standalone ไม่ผูกกับเมนู — เข้าถึงผ่าน URL <code>&lt;slug&gt;.html</code> ตรงๆ เหมาะกับหน้า promotion ที่ลิงก์จาก Hero Banner หรือใช้นอกเว็บไซต์</p>
-
         <div class="cms-field-row">
           <div class="cms-field">
-            <label for="fieldPageTitleTh">ชื่อเพจ (TH) *</label>
-            <input type="text" id="fieldPageTitleTh" required />
+            <label for="fieldSparePartBrand">ยี่ห้อ (Brand)</label>
+            <input type="text" id="fieldSparePartBrand" placeholder="เช่น NUOVA SIMONELLI" />
           </div>
           <div class="cms-field">
-            <label for="fieldPageTitleEn">ชื่อเพจ (EN) *</label>
-            <input type="text" id="fieldPageTitleEn" required />
+            <label for="fieldSparePartTitle">ชื่อเอกสาร (Title) *</label>
+            <input type="text" id="fieldSparePartTitle" placeholder="เช่น Oscar II" required />
           </div>
         </div>
 
         <div class="cms-field">
-          <label for="fieldPageSlug">Slug (ใช้เป็นชื่อไฟล์ในลิงก์ เช่น slug "summer-sale-2026" เปิดที่ summer-sale-2026.html) *</label>
-          <input type="text" id="fieldPageSlug" placeholder="เช่น summer-sale-2026" required />
+          <label for="fieldSparePartDescription">รายละเอียด (Description)</label>
+          <textarea id="fieldSparePartDescription" rows="3" placeholder="รายละเอียดเอกสาร (ไม่บังคับ)"></textarea>
         </div>
 
-        <p class="cms-error-text" id="pageFormError"></p>
+        <!-- รูปหน้าปกไม่มี UI ให้แก้ตรงนี้แล้ว (สร้างอัตโนมัติจากหน้าแรกของ PDF ที่อัปโหลดด้านล่างเสมอ
+             ดูผลลัพธ์ได้ที่คอลัมน์ "ปก" ในหน้ารายการแทน) — เก็บค่าไว้ใน hidden input นี้เพื่อให้ onFile
+             hook ของ PDF dropzone (ใน spare-parts.js) ยังตั้งค่าและ submitForm ยังอ่านไปบันทึกได้เหมือนเดิม -->
+        <input type="hidden" id="fieldSparePartCover" />
+
+        <div class="cms-field">
+          <label for="fieldSparePartPdf">ไฟล์ PDF *</label>
+          <div class="cms-image-field">
+            <div class="cms-image-field__controls" style="width:100%;">
+              <input type="url" id="fieldSparePartPdf" placeholder="https://... หรืออัปโหลดไฟล์" />
+              <div class="cms-dropzone" id="fieldSparePartPdfDropzone">
+                <svg class="cms-dropzone__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V4M12 4l-4 4M12 4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <p class="cms-dropzone__title"><strong>คลิกเพื่ออัปโหลด</strong> หรือลากไฟล์มาวาง</p>
+                <p class="cms-dropzone__hint">รองรับไฟล์ PDF ขนาดไม่เกิน 30 MB</p>
+              </div>
+              <input type="file" id="fieldSparePartPdfFile" accept="application/pdf" hidden />
+              <p class="cms-dropzone__hint" id="fieldSparePartPdfName" hidden style="margin-top:8px; word-break:break-all;"></p>
+              <span class="cms-image-field__status" id="fieldSparePartPdfStatus"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cms-checkbox-row">
+          <input type="checkbox" id="fieldSparePartActive" checked />
+          <label for="fieldSparePartActive" style="font-weight:600; color:var(--cms-text);">เปิดใช้งาน (Active)</label>
+        </div>
+
+        <p class="cms-error-text" id="sparePartFormError"></p>
       </div>
       <div class="cms-modal__footer">
-        <button type="button" class="cms-btn" id="pageModalCancel">ยกเลิก</button>
-        <button type="submit" class="cms-btn cms-btn--primary" id="pageFormSubmit">บันทึก</button>
+        <button type="button" class="cms-btn" id="sparePartModalCancel">ยกเลิก</button>
+        <button type="submit" class="cms-btn cms-btn--primary" id="sparePartFormSubmit">บันทึก</button>
       </div>
     </form>
   </div>
@@ -186,9 +202,15 @@
 <div class="cms-toast" id="cmsToastWrap"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+  // ต้องตั้ง workerSrc ก่อนใช้ pdfjsLib เสมอ (PDF.js ประมวลผลไฟล์ในเว็บเวิร์กเกอร์แยก ไม่ตั้งจะ error ตอนเปิดไฟล์)
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+</script>
 <script src="config.js"></script>
 <script src="supabase-client.js"></script>
 <script src="app.js"></script>
-<script src="pages.js"></script>
+<script src="upload.js"></script>
+<script src="spare-parts.js"></script>
 </body>
 </html>

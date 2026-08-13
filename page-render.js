@@ -26,9 +26,20 @@
     return div.innerHTML;
   }
 
+  // ⚠️🔧 DOMPurify ตัด <iframe> ทิ้งตามค่าเริ่มต้นเสมอ (ถือเป็น tag เสี่ยง) แม้จะไม่ใส่ config อะไรเลยก็ตาม —
+  // เจอบั๊กจริงตอนสร้าง section "Spare Parts" (พรีวิว PDF ในกรอบ iframe หายไปเงียบๆ ทั้งที่การ์ดเอกสาร/
+  // data-* attribute อื่นๆ รอดผ่านมาปกติ) เพิ่ม iframe เข้า ADD_TAGS ตรงๆ (เทียบเท่า Google Maps iframe ที่
+  // เขียนตรงใน footer แบบ static ไม่ผ่าน sanitize อยู่แล้ว — เนื้อหา custom-html มาจากแอดมิน CMS ที่เชื่อถือได้
+  // เหมือนกัน ไม่ใช่ input จากผู้ใช้ทั่วไป) พร้อม attribute ที่ iframe ที่ปลอดภัย (Google Maps/PDF viewer) ใช้จริง
+  // — target="_blank" ก็หายไปด้วยเช่นกัน (ไม่อยู่ใน default ALLOWED_ATTR) เพิ่มเข้า ADD_ATTR ให้ลิงก์เปิดแท็บใหม่ได้
   function sanitize(html) {
     if (!html) return '';
-    return window.DOMPurify ? DOMPurify.sanitize(html) : escapeHtml(html);
+    return window.DOMPurify
+      ? DOMPurify.sanitize(html, {
+          ADD_TAGS: ['iframe'],
+          ADD_ATTR: ['target', 'allow', 'allowfullscreen', 'loading', 'referrerpolicy', 'frameborder'],
+        })
+      : escapeHtml(html);
   }
 
   // เพจจะ "มองเห็นได้" ก็ต่อเมื่อ pages.is_active=true เอง และ (ถ้าผูกกับเมนู) เมนูนั้นต้อง is_active=true

@@ -38,6 +38,159 @@
     return { url: data.publicUrl };
   };
 
+  /* อัปโหลดไฟล์ชนิดอื่น (ไม่ใช่รูปภาพ) ขึ้น bucket เดียวกัน — ใช้ครั้งแรกกับ PDF ในหน้า "Spare Parts"
+     (คลังเอกสารอะไหล่) รับ opts.allowedTypes/opts.typeErrorMessage/opts.maxSizeMb เพื่อ validate ตามชนิดไฟล์
+     ที่ต้องการ (cmsUploadImage เดิมไม่แก้ เพราะ path/logic อัปโหลดจริงเหมือนกันเป๊ะ แค่ validation ต่างกัน) */
+  window.cmsUploadFile = async function (file, opts) {
+    opts = opts || {};
+    var allowedTypes = opts.allowedTypes || null;
+    var maxSizeMb = opts.maxSizeMb || 20;
+
+    if (!file) return { error: 'ไม่พบไฟล์' };
+    if (allowedTypes && allowedTypes.indexOf(file.type) === -1) {
+      return { error: opts.typeErrorMessage || 'ชนิดไฟล์นี้ไม่รองรับ' };
+    }
+    if (file.size > maxSizeMb * 1024 * 1024) {
+      return { error: 'ไฟล์ใหญ่เกินไป (สูงสุด ' + maxSizeMb + 'MB)' };
+    }
+
+    var path = randomId() + '.' + safeExt(file.name);
+    var { error } = await window.cmsSupabase.storage.from(BUCKET).upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+    });
+
+    if (error) {
+      return { error: 'อัปโหลดไม่สำเร็จ: ' + error.message };
+    }
+
+    var { data } = window.cmsSupabase.storage.from(BUCKET).getPublicUrl(path);
+    return { url: data.publicUrl, filename: file.name };
+  };
+
+  /* ผูก UI สำหรับอัปโหลดไฟล์ที่ไม่ใช่รูปภาพ (เช่น PDF) — ไม่มี <img> preview แต่โชว์ชื่อไฟล์ปัจจุบันแทน
+     (ดึงชื่อไฟล์จาก URL ที่เก็บไว้ เพราะไม่ได้เก็บชื่อไฟล์เดิมแยกในฟิลด์ url เอง) โครงเดียวกับ
+     cmsBindImageUpload แต่แยกฟังก์ชันเพราะ preview เป็น text ไม่ใช่รูป */
+  window.cmsBindFileUpload = function (opts) {
+    var fileInput = opts.fileInput;
+    var urlInput = opts.urlInput;
+    var fileNameEl = opts.fileNameEl;
+    var statusEl = opts.statusEl;
+    var dropzone = opts.dropzone;
+    var uploadOpts = opts.uploadOpts || {};
+
+    function updatePreview() {
+      if (!fileNameEl) return;
+      var val = urlInput.value.trim();
+      if (val) {
+        var decoded = decodeURIComponent(val.split('/').pop() || '');
+        fileNameEl.textContent = decoded;
+        fileNameEl.hidden = false;
+      } else {
+        fileNameEl.textContent = '';
+        fileNameEl.hidden = true;
+      }
+    }
+
+    if (urlInput) {
+      urlInput.addEventListener('input', updatePreview);
+      updatePreview();
+    }
+
+    async function handleFile(file) {
+      if (!file) return;
+
+      if (statusEl) statusEl.textContent = 'กำลังอัปโหลด...';
+      var result = await window.cmsUploadFile(file, uploadOpts);
+      if (fileInput) fileInput.value = '';
+
+      if (result.error) {
+        if (statusEl) statusEl.textContent = result.error;
+        if (window.cmsToast) window.cmsToast(result.error, 'error');
+        return;
+      }
+
+      urlInput.value = result.url;
+      updatePreview();
+      if (statusEl) statusEl.textContent = 'อัปโหลดสำเร็จ';
+      setTimeout(function () {
+        if (statusEl) statusEl.textContent = '';
+      }, 2500);
+
+      // hook เสริม (opts.onFile) — เรียกหลังอัปโหลดไฟล์หลักสำเร็จ ส่ง raw File กลับไปให้ผู้เรียกใช้ทำ
+      // อย่างอื่นต่อได้เอง (เช่น cms/spare-parts.js ใช้สร้างรูปปกจากหน้าแรกของ PDF อัตโนมัติ) ไม่รอ/ไม่บล็อก
+      // การอัปโหลดไฟล์หลัก เพราะเป็นงานเสริมที่ล้มเหลวได้โดยไม่ควรทำให้อัปโหลดไฟล์หลักดูเหมือนพัง
+      if (typeof opts.onFile === 'function') {
+        opts.onFile(file);
+      }
+    }
+
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        var file = fileInput.files && fileInput.files[0];
+        handleFile(file);
+      });
+    }
+
+    if (dropzone && fileInput) {
+      dropzone.addEventListener('click', function () { fileInput.click(); });
+
+      ['dragenter', 'dragover'].forEach(function (evt) {
+        dropzone.addEventListener(evt, function (e) {
+          e.preventDefault();
+          dropzone.classList.add('is-dragover');
+        });
+      });
+      ['dragleave', 'dragend'].forEach(function (evt) {
+        dropzone.addEventListener(evt, function () {
+          dropzone.classList.remove('is-dragover');
+        });
+      });
+      dropzone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        dropzone.classList.remove('is-dragover');
+        var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        handleFile(file);
+      });
+    }
+
+    return { updatePreview: updatePreview };
+  };
+
+  /* สร้างรูปปกจากหน้าแรกของไฟล์ PDF อัตโนมัติ (ใช้ครั้งแรกกับหน้า "Spare Parts" กันแอดมินต้องหารูปหน้าปก
+     มาอัปโหลดเองทุกครั้ง) render หน้า 1 ของ PDF ลง <canvas> ด้วย PDF.js (โหลดผ่าน CDN ใน spare-parts.html
+     ก่อนไฟล์นี้) แล้วแปลง canvas เป็นไฟล์รูป JPEG อัปโหลดขึ้น bucket เดียวกับรูปอื่นๆ ผ่าน cmsUploadImage เดิม
+     คืนค่า { url, error } แบบเดียวกับฟังก์ชันอัปโหลดอื่นในไฟล์นี้ — ทำงานฝั่ง client ล้วนๆ ไม่ต้องมี server
+     แปลง PDF เป็นรูปแยกต่างหาก (เว็บนี้เป็น static site ไม่มี server ให้ประมวลผลไฟล์อยู่แล้ว) */
+  window.cmsGeneratePdfCoverImage = async function (file) {
+    if (!file) return { error: 'ไม่พบไฟล์ PDF' };
+    if (!window.pdfjsLib) return { error: 'PDF.js ยังไม่พร้อมใช้งาน (โหลดสคริปต์ไม่สำเร็จ)' };
+
+    var pdf;
+    try {
+      var arrayBuffer = await file.arrayBuffer();
+      pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    } catch (err) {
+      return { error: 'อ่านไฟล์ PDF ไม่สำเร็จ (สร้างรูปปกอัตโนมัติไม่ได้): ' + err.message };
+    }
+
+    var page = await pdf.getPage(1);
+    var viewport = page.getViewport({ scale: 1.4 });
+    var canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    var ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+    var blob = await new Promise(function (resolve) {
+      canvas.toBlob(function (b) { resolve(b); }, 'image/jpeg', 0.85);
+    });
+    if (!blob) return { error: 'สร้างรูปปกจาก PDF ไม่สำเร็จ' };
+
+    var coverFile = new File([blob], 'pdf-cover-' + randomId() + '.jpg', { type: 'image/jpeg' });
+    return window.cmsUploadImage(coverFile);
+  };
+
   /* ผูก UI แบบสำเร็จรูป: file input + preview <img> + text input (URL) ที่มีอยู่แล้ว + dropzone (คลิก/
      ลากไฟล์จาก desktop มาวางได้จริง — ไม่ใช่แค่ดีไซน์) เรียกใช้ครั้งเดียวตอน DOMContentLoaded โดยส่ง
      element ที่เกี่ยวข้องเข้ามา (opts.dropzone เป็น optional — ถ้าไม่ส่งมาก็ยังใช้ fileInput ตรงๆ ได้เหมือนเดิม) */
